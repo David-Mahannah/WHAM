@@ -54,30 +54,46 @@ def mapURL(prev_url, url, scope, level, verbose, proxy):
             resp = http.request("GET", url)
 
         else:
-            resp = urllib3.request("GET", url)
+            resp = urllib3.request("GET", url, headers={'Accept-Language':'en-US,en;q=0.5'}, redirect=False)
     except Exception as error:
         verbosePrint("Failed to retrieve: " + url, verbose)
         print(error)
         return
 
-    if resp.status != 200:
-        verbosePrint("Response contains status code: "+resp.status)
-        return
+
+
+
+    #if resp.status != 200:
+    #    verbosePrint("Response contains status code: "+str(resp.status), verbose)
+    #    return
 
     try:
         str_HTML = resp.data.decode("utf-8")
     except:
         verbosePrint("Could not read data retrieved from: " + url, verbose)
         return
-    
-    f.write(generic_prev_url.replace("https://" + scope, '') + " " + generic_url.replace("https://" + scope, '') + "\n")
+   
+    ##print(str_HTML)
+
+    f.write(generic_prev_url.replace("https://" + scope, '') + " " + generic_url.replace("https://" + scope, '').replace("#", '\x23') + "\n")
 
     # Get all links without leading / and add it
-    sublinks_wo_slash = list(map(lambda x : '/' + x, re.findall(r'<a[^>]*href="[^\/]([^"]*\/?[^"]+)', str_HTML)))
+    sublinks_wo_slash = list(map(lambda x : '/' + x, re.findall(r'href="([^"\/]+\/?[^"]+)', str_HTML)))
     # Get all links with leading /
-    sublinks = re.findall(r'<a[^>]*href="(\/[^"]*\/?[^"]+)', str_HTML)
+    sublinks = re.findall(r'href="(\/[^"]*\/?[^"]+)', str_HTML)
     # Join em
+
+
+    new_sublinks = []
     sublinks += sublinks_wo_slash
+    for link in sublinks:
+        if "javascript" not in link:
+            new_sublinks.append(link)
+
+    sublinks = new_sublinks
+            
+
+
 
     if sublinks:
         for i in sublinks:
