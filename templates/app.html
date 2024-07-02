@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"">
+  </head>
+
+<body onresize="ResetColumnSizes()">
+		<div id="page" onmouseup="EndDrag()" onmousemove="OnDrag(event)">
+			<div id="header">
+				Web Hacker's Application Map
+			</div>
+			<div id="leftcol">
+        <ul>
+          <li><span style="font-size: 30px;">Settings</span></li>
+          <hr>
+          <li><span style="font-size: 20px;">Target</span></li>
+          <li><input type="radio" id="URL_Radio" onclick="radio_switch()" checked="checked" name="targetSelector"><b>URL:</b><input type=text id="URL" placeholder="https://google.com"></li>      
+          <li><input type="radio" id="Request_Radio" onclick="radio_switch()" name="targetSelector"><b>Request:</b></li>
+          <li><textarea rows="10" cols="30" id="Request" disabled="true">GET / HTTP/2
+Host: www.google.com
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate, br
+Upgrade-Insecure-Requests: 1
+Sec-Fetch-Dest: document
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: none
+Sec-Fetch-User: ?1
+Priority: u=1
+Te: trailers
+
+</textarea></li>
+          <hr>
+          <li><b>Scope:</b><input type=text id="Scope"></li>
+          <hr>
+
+
+          <li><input type=checkbox onclick="proxy_toggle()"><span style="font-size: 20px;">Proxy</span></li>
+          <li><input type=textbox placeholder="http://127.0.0.1" disabled="true" size="14" id="ProxyHost">:<input type=textbox size="6" placeholder="8080" id="ProxyPort" disabled="true"></li>
+          <li><span style="font-size: 16px;">Certificate:<input type=file Name="Certificate" id="Cert" disabled="true"></li>
+
+
+          <hr>
+          <li><span style="font-size: 20px;">Behavior</span></li>
+          <li><input type=checkbox onclick="delay_toggle()"><b>Delay:</b><input type=textbox size="10" id="DelayMS" disabled="true">ms</li>
+          <li><b>Depth:</b><input type=textbox size="10" id="Depth" value="3"></li>
+
+          <hr>
+          <li><input type=button value="Run" onclick="run()" style="width:100%"></li>
+          <li><input type=button value="Cancel" onclick="cancel()" style="width:100%"></li>
+        </ul>
+			</div>
+			<div id="leftdragbar" onmousedown="StartLeftDrag()"></div>
+			<div id="tabs">
+
+			</div>
+			<div id="tabpages">
+        <iframe src="{{ url_for('static', filename='map.html') }}" width="100%" height="100%" id="graph_frame" scrolling="no" frameBorder="0"></iframe>
+			</div>
+			<div id="rightdragbar" onmousedown="StartRightDrag()"></div>
+			<div id="rightcol">
+        <!--
+        <ul>
+          <li><span style="font-size: 30px;">Filter Results:</span></li>
+          <li><b>Search:</b><input type=textbox></li>
+          <li><b>MIME type</b></li>
+          <li><input type=checkbox value=""><label>HTML</label></li>
+          <li><input type=checkbox value=""><label>Script</label></li>
+          <li><input type=checkbox value=""><label>XML</label></li>
+          <li><input type=checkbox value=""><label>Other text</label></li>
+          <li><input type=checkbox value=""><label>Images</label></li>
+          <li><input type=checkbox value=""><label>Other</label></li>
+        </ul>
+        -->
+			</div>
+			<div id="footer">
+      </div>
+		</div>
+    <script src="{{ url_for('static', filename='resize.js') }}"></script>
+    <script src="{{ url_for('static', filename='api.js') }}"></script>
+    <script src="{{ url_for('static', filename='settings.js') }}"></script>
+</body>
+</html>
+
+

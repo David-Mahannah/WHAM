@@ -1,0 +1,466 @@
+HTTP/1.1 200 OK
+Server: nginx
+Date: Fri, 07 Jun 2024 18:55:27 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 29003
+Connection: keep-alive
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Vary: Accept-Encoding
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <img href="google">
+    <meta charset="utf-8">
+    <title>Hackazon  &mdash; Wish List</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Fonts -->
+    <!--link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=McLaren">
+    <link href='//fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic' rel='stylesheet' type='text/css'-->
+    <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Libraries -->
+    <link href="/css/ekko-lightbox.css" rel="stylesheet">
+    <link href="/css/star-rating.min.css" rel="stylesheet">
+    <link href="/css/nivo-slider.css" rel="stylesheet">
+    <link href="/css/nivo-themes/bar/bar.css" rel="stylesheet">
+    <link href="/css/nivo-themes/light/light.css" rel="stylesheet">
+    <link href="/css/bootstrapValidator.css" rel="stylesheet">
+    <link href="/css/modern-business.css" rel="stylesheet">
+    <link href="/css/ladda-themeless.min.css" rel="stylesheet">
+
+    <!-- Add custom CSS here -->
+    <link href="/css/subcategory.css" rel="stylesheet">
+    <link href="/css/site.css" rel="stylesheet">
+    <link href="/css/sidebar.css" rel="stylesheet">
+
+        <script type="text/javascript">
+        var App = window.App || {};
+        App.config = {"host":"http:\/\/localhost","user":null,"baseImgPath":"\/user_pictures\/","dataType":"xml"};
+    </script>
+
+    <!-- JavaScript -->
+    <script src="/js/jquery-1.10.2.js"></script>
+    <script src="/js/json3.min.js"></script>
+    <script src="/js/jquery.dump.js"></script>
+    <script src="/js/jquery-migrate-1.2.1.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/modern-business.js"></script>
+    <script src="/js/bootstrapValidator.min.js"></script>
+    <script src="/js/jquery.validate.min.js"></script>
+    <script src="/js/spin.min.js"></script>
+    <script src="/js/moment.min.js"></script>
+    <script src="/js/jquery.modern-blink.js"></script>
+    <script src="/js/ladda.min.js"></script>
+    <script src="/js/ladda.jquery.min.js"></script>
+    <script src="/js/jquery.inputmask.js"></script>
+    <script src="/js/ekko-lightbox.js"></script>
+    <script src="/js/jquery.nivo.slider.pack.js"></script>
+    <script src="/js/respond.min.js"></script>
+    <script src="/js/star-rating.min.js"></script>
+    <script src="/js/bootstrap.file-input.js"></script>
+    <script src="/js/knockout-2.2.1.js"></script>
+    <script src="/js/knockout.localStorage.js"></script>
+    <script src="/js/koExternalTemplateEngine_all.min.js"></script>
+    <script src="/js/amf/services.js"></script>
+    <script src="/js/swfobject.js"></script>
+
+    <script src="/js/tools.js"></script>
+    <script src="/js/site.js"></script>
+
+    <script type="text/javascript">
+        // For version detection, set to min. required Flash Player version, or 0 (or 0.0.0), for no version detection.
+        var swfVersionStr = "11.1.0";
+        // To use express install, set to playerProductInstall.swf, otherwise the empty string.
+        var xiSwfUrlStr = "/swf/playerProductInstall.swf";
+        var flashvars = {
+            host: "http://localhost"
+        };
+        var params = {};
+        params.quality = "high";
+        params.bgcolor = "#ffffff";
+        params.allowscriptaccess = "sameDomain";
+        params.allowfullscreen = "false";
+        var attributes = {};
+        attributes.id = "SliderBanner";
+        attributes.name = "SliderBanner";
+        attributes.align = "middle";
+
+        $(function () {
+            if ($('#flashBanner').length) {
+                setTimeout(function () {
+                    swfobject.embedSWF(
+                        "/swf/SliderBanner.swf", "flashBanner",
+                        "360", "290",
+                        swfVersionStr, xiSwfUrlStr,
+                        flashvars, params, attributes);
+                    // JavaScript enabled so display the flashContent div in case it is not replaced with a swf object.
+                    swfobject.createCSS("#flashBanner", "display:block;text-align:left;");
+                }, 300);
+            }
+        });
+    </script>
+
+    </head>
+<a href="https://google.com">
+<body class="">
+    <header class="hw-header">
+    <nav class="navbar hw-navbar navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#hw-navbar">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand hw-navbar-brand" href="/"><!--span>Hackazon <em>Webscantest</em></span--><img src="/images/Hackazon.png"></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse hw-navbar-collapse navbar-collapse navbar-ex1-collapse" id="hw-navbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/faq">FAQ</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
+                                        <li><a href="/wishlist/">Wish List</a>
+                                        <li class="dropdown hw-login-item">
+                      							        <a href="#login-box" class="login-window">Sign In / Sign Up</a>
+                                          </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle js-cart-top-icon" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-shopping-cart"></span></a>
+                        <ul class="dropdown-menu js-cart-top-list cart-top-list">
+                                                        <li class="divider"></li>
+                            <li><a href="/cart/view">Show all items in shopping cart <i class="glyphicon glyphicon-chevron-right"></i></a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-12 col-lg-12">
+                  <div class="row">
+    <form role="search" action="/search" method="get" id="searchForm" >
+        <input type="hidden" name="id" value="" />
+        <div class="col-xs-12 col-md-12">
+            <div class="input-group" style="margin-bottom: 10px;">
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="searchLabel">All <span class="caret"></span></button>
+                    <ul class="dropdown-menu" role="menu" id="searchValue">
+                        <li class="dropdown"><a href="#">All</a></li>
+                                                                            <li class="dropdown dropdown-submenu"><a href="/category/view?id=49" data-item-id="49">Unlimited Instant Videos</a>
+                                                                    <ul class="dropdown-menu">
+                                                                                    <li><a href="/category/view?id=52" data-item-id="52">Shop Instant Video</a>
+                                                                                        <li><a href="/category/view?id=51" data-item-id="51">Prime Instant Video</a>
+                                                                                        <li><a href="/category/view?id=50" data-item-id="50">Amazon Instant Video</a>
+                                                                                </ul>
+                                                            </li>
+                                                    <li class="dropdown dropdown-submenu"><a href="/category/view?id=44" data-item-id="44">Test Fire TV</a>
+                                                                    <ul class="dropdown-menu">
+                                                                                    <li><a href="/category/view?id=48" data-item-id="48">Test Fire TV</a>
+                                                                                        <li><a href="/category/view?id=47" data-item-id="47">Test Fire Game Controller</a>
+                                                                                        <li><a href="/category/view?id=46" data-item-id="46">Prime Instant Video</a>
+                                                                                        <li><a href="/category/view?id=45" data-item-id="45">Games for Fire TV</a>
+                                                                                </ul>
+                                                            </li>
+                                                    <li class="dropdown dropdown-submenu"><a href="/category/view?id=38" data-item-id="38">Sports & Outdoors</a>
+                                                                    <ul class="dropdown-menu">
+                                                                                    <li><a href="/category/view?id=43" data-item-id="43">Team Sports</a>
+                                                                                        <li><a href="/category/view?id=42" data-item-id="42">Golf</a>
+                                                                                        <li><a href="/category/view?id=41" data-item-id="41">Fan Shop</a>
+                                                                                        <li><a href="/category/view?id=40" data-item-id="40">Cycling</a>
+                                                                                        <li><a href="/category/view?id=39" data-item-id="39">Athletic & Outdoor Clothing</a>
+                                                                                </ul>
+                                                            </li>
+                                                    <li class="dropdown dropdown-submenu"><a href="/category/view?id=32" data-item-id="32">Home, Garden & Tools</a>
+                                                                    <ul class="dropdown-menu">
+                                                                                    <li><a href="/category/view?id=37" data-item-id="37">Patio, Lawn & Garden</a>
+                                                                                        <li><a href="/category/view?id=36" data-item-id="36">Kitchen & Dining</a>
+                                                                                        <li><a href="/category/view?id=35" data-item-id="35">Furniture & Decor</a>
+                                                                                        <li><a href="/category/view?id=34" data-item-id="34">Bedding & Bath</a>
+                                                                                        <li><a href="/category/view?id=33" data-item-id="33">Appliances</a>
+                                                                                </ul>
+                                                            </li>
+                                                    <li class="dropdown dropdown-submenu"><a href="/category/view?id=26" data-item-id="26">Electronics & Computers</a>
+                                                                    <ul class="dropdown-menu">
+                                                                                    <li><a href="/category/view?id=31" data-item-id="31">Printers & Ink</a>
+                                                                                        <li><a href="/category/view?id=30" data-item-id="30">Musical Instruments</a>
+                                                                                        <li><a href="/category/view?id=29" data-item-id="29">Cell Phones & Accessories</a>
+                                                                                        <li><a href="/category/view?id=28" data-item-id="28">Car Electronics</a>
+                                                                                        <li><a href="/category/view?id=27" data-item-id="27">CAMERA, PHOTO & VIDEO</a>
+                                                                                </ul>
+                                                            </li>
+                                                    <li class="dropdown dropdown-submenu"><a href="/category/view?id=20" data-item-id="20">Clothing, Shoes & Jewelry</a>
+                                                                    <ul class="dropdown-menu">
+                                                                                    <li><a href="/category/view?id=25" data-item-id="25">Women</a>
+                                                                                        <li><a href="/category/view?id=24" data-item-id="24">Men</a>
+                                                                                        <li><a href="/category/view?id=23" data-item-id="23">Girls</a>
+                                                                                        <li><a href="/category/view?id=22" data-item-id="22">Boys</a>
+                                                                                        <li><a href="/category/view?id=21" data-item-id="21">Baby</a>
+                                                                                </ul>
+                                                            </li>
+                                                    <li class="dropdown dropdown-submenu"><a href="/category/view?id=14" data-item-id="14">Beauty, Health & Grocery</a>
+                                                                    <ul class="dropdown-menu">
+                                                                                    <li><a href="/category/view?id=19" data-item-id="19">Natural & Organic</a>
+                                                                                        <li><a href="/category/view?id=18" data-item-id="18">Mens Grooming</a>
+                                                                                        <li><a href="/category/view?id=17" data-item-id="17">Luxury Beauty</a>
+                                                                                        <li><a href="/category/view?id=16" data-item-id="16">Health, Household & Baby Care</a>
+                                                                                        <li><a href="/category/view?id=15" data-item-id="15">All beauty</a>
+                                                                                </ul>
+                                                            </li>
+                                                    <li class="dropdown dropdown-submenu"><a href="/category/view?id=8" data-item-id="8">Automotive & Industrial</a>
+                                                                    <ul class="dropdown-menu">
+                                                                                    <li><a href="/category/view?id=10" data-item-id="10">Automotive Tools & Equipment</a>
+                                                                                        <li><a href="/category/view?id=9" data-item-id="9">Automotive Parts & Accessories</a>
+                                                                                </ul>
+                                                            </li>
+                                                    <li class="dropdown dropdown-submenu"><a href="/category/view?id=2" data-item-id="2">Arts, Crafts & Sewing Coupons</a>
+                                                                    <ul class="dropdown-menu">
+                                                                                    <li><a href="/category/view?id=7" data-item-id="7">Sewing</a>
+                                                                                        <li><a href="/category/view?id=6" data-item-id="6">Scrapbooking</a>
+                                                                                        <li><a href="/category/view?id=5" data-item-id="5">Painting</a>
+                                                                                        <li><a href="/category/view?id=4" data-item-id="4">Jewelry-Making</a>
+                                                                                        <li><a href="/category/view?id=3" data-item-id="3">Craft Supplies</a>
+                                                                                </ul>
+                                                            </li>
+                                            </ul>
+                </div>
+                <!-- /btn-group -->
+                <input type="text" class="form-control" placeholder="Search products..." maxlength="100" name="searchString" value="">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit">Search!</button>
+                </span>
+            </div>
+            <!-- /input-group -->
+        </div>
+    </form>
+</div>                </div>
+            </div>
+        </div>
+        <!-- /.container -->
+    </nav>
+</header>
+    <div id="container">
+        <div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Wish List</h1>
+            <ol class="breadcrumb">
+                <li><a href="/">Home</a></li>
+                <li class="active">Wish List</li>
+            </ol>
+        </div>
+
+    </div>
+    <div class="row wishlist">
+        <div class="col-lg-12 text-center">
+            <div class="logo-container">
+                <img src="/images/wishlist-lg.jpg" border="0" height="96" width="254">
+            </div>
+        </div>
+
+
+        <div class="col-lg-1"></div>
+        <div class="col-lg-4">
+            <div class="">
+                <h1 class="a-nowrap">Create a Wish List</h1>
+                                    <a href="/user/login?return_url=/wishlist" class="btn btn-primary">Get Started</a>
+                            </div>
+        </div>
+        <div class="col-lg-7">
+            <h1>Find a Wish List</h1>
+            <script>
+    $(function () {
+        $(".remove_follower").click(function(){
+            var block = $(this).parents('.collapsible-block');
+            var follower_id = block.attr('data-id');
+            $.ajax({
+                url:'/wishlist/remove_follower',
+                type:"POST",
+                data: {follower_id : follower_id},
+                dataType:"json",
+                success: function(data){
+                    if (data.success) {
+                        block.remove();
+                    }
+                }
+            });
+        });
+        $(".toggle").click(function(){
+            $(this).parents('.collapsible-block').children(".block-content").slideToggle();
+        });
+        $("#wishlist_search_form").submit(function(){
+            $.ajax({
+                url:'/wishlist/search',
+                type:"POST",
+                data: $("#wishlist_search_form").serialize(),
+                dataType:"json",
+                success: function(data){
+                    var output = '';
+                    if (data.length == 0) {
+                        output = '<div class="alert alert-danger text-center" style="margin-top: 10px;" role="alert"><h2>No results</h2></div>'
+                    } else {
+                        var img = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAIAAAHDVQljAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA7NJREFUeNpiXHHi/o/ffxnAgAnI+vvvv5mSMJDBBBT4/fcfRIZFgItNTYIXyLJTFwMIIMYFh+8wwABID1CDGB8HVA8Q3H/9BUgyXn/2/v9/EP/7778AAQTSAzHdUVMcKHTu4bsvP/6A9EO0cLExQxi6MgJQgyHU119Qx1189B7CYLz5/APQHAYMABBAKO6CAxaI95w0xf/8+8/CxLjv+kuE6X/BDvwDM40JTS/E+VDRe6++AklmJkZGRpgoUF5WmBPIABoAMQSL44B2MmG6F6gcIICgYQIXAioCBqOsMNev3/8uP/kAtAnFGGQOGwuTpYoIxHkMHAzAMH3x8cetF58Q0YJi19//UEfjACiqf//79/vPP0SoMjK8+vQDp2pmRsYjt17D3fr47bf3336huxvoM252Fn1ZQS52ZiAbHhoyQlxA7wKNuPv6y91XX0Bhe+v5hz/YIhcrAAgg7DGOFXCwMrMgBzbYZ4wqYjy8nKwP33wFehFfeIvwsuvICPwDO0xbmh+YSPddf8GEFKZMyGlGXYLvH5IfgOb+/487vP8zoHv3P87YYWT4hRQ1EKWMuFT///+fnZUZWQ7oKGDKwa4a6JvbLz4jJxNg7v+NahuK1mcfvrMgBdm1px+ZUEMQPZ28/vITymZifPf1J840+AeUWpgFudjg2cJGTQwoiByILP/BEspiPMqiPMBcjCLHxOiqLfHt598Lj99/+wkqZBjP3n/Dy8GCP2EBvQ4Mg+vPPrFwsjETTINAC4HWaknxMTEQDYBGAgRotcpyGoaBaLxlaVrSQgCpSCyH4Lochj8ugJBAiB9AVC2kVbpkdZ8TBFVSW61UK/KP7fF43jIhd/fPDQjbm0AeqSqmcqqJ1OBmewBWTvUaR6mGA+869Ds2J9Udsqo4ZhjHZ7T8nqe6KxCWG5K9vTkJOmJT1Ypo1Xzac4Z992WktM014beXDwXwBINblFIaEOCU7upqm89BP1qkBbFMNV2k+d6hkaxv867DpT7rQlpXIcyQ6rbos05z1WL1TABJkqyAanU8oAYYYeJv4zlnW44Cusf36OF1YiCYCQfGyCROslyS1puiZTaaJYLtD+NvxUsZeAJZyxYSfU9cDLy8MGmNN84of2Qk7DrngXfUEYLSrT8auTKe3mXozxbZ13Q5jpO0kLSyj//QNXOPffsscMOuC92VpfVHZwOvsQSzHPg2PkQExdNcjuPVaLqCSrFKnj5+0LuKndvkLgPkAWvpwePW5oOwnCmxltahB8KuAf+pyQJVxN7hAAAAAElFTkSuQmCC">';
+                        for (i in data) {
+                            var output = output + '<div class="panel panel-primary js-people-box" data-id="'+data[i].id+'"' + img + '<div class="panel-heading">' + data[i].username + '</div>';
+                            output = output + '<div class="panel-body"><ul style="list-style:none">';
+                            var cntList = data[i].wishLists.length;
+                            var c = 0;
+                            for (j in data[i].wishLists) {
+                                if (c < 3) {
+                                    output = output + '<li><a href="/wishlist/view/' + data[i].wishLists[j].id + '">' + data[i].wishLists[j].name + '</a></li>';
+                                }
+                                c = c + 1;
+                            }
+                            if (cntList > 3) {
+                                output = output + '<li>Total: ' + cntList + ' lists</li>';
+                            }
+                            if (data[i].remembered) {
+                                var remember = '<div class="remembered">Remembered</div>';
+                            } else {
+                                var remember = '<button class="btn btn-primary remember" onclick="remember(this)">Remember</button>';
+                            }
+                            output = output + '</ul><div class="remember">'+remember+'</div></div></div>';
+
+                        }
+                    }
+                    $('.product-list').empty().append(output);
+                },
+                fail: function() {
+                    alert( "error" );
+                }
+            });
+            return false;
+        });
+    });
+    function remember(el) {
+                    window.location.href = "/user/login?return_url=%2Fwishlist%2F"
+        return false;
+                var userId = $(el).parents('.js-people-box').attr('data-id');
+        $.ajax({
+            url:'/wishlist/remember',
+            type:"POST",
+            data: {user_id: userId},
+            dataType:"json",
+            success: function(data){
+                if (data.success) {
+                    $(el).parent('.remember').empty().append('<div class="remembered">Remembered!</div>');
+                }
+            }
+        });
+    }
+</script>
+
+    <form id="wishlist_search_form" role="search" class="form-inline navbar-form navbar-left search-form">
+        <div class="form-group search-field-box">
+            <input name="search" type="text" class="form-control search-field"
+                   placeholder="Type a person's name or email address"/>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-default" type="submit">Search</button>
+        </div>
+    </form>
+        </div>
+        <div class="clearfix"></div>
+        <div class="products clearfix">
+            <div class="clearfix product-list"></div>
+        </div>
+    </div>
+	<div class="row">
+		<div class="col-lg-3">
+			<h3>Get <br>Organized</h3>
+			<p>Create multiple lists for yourself and others</p> 
+			<img alt="" src="/images/wl_cat_lists_200px._V359103046_.jpg" height="143" width="200">
+		</div>
+		<div class="col-lg-3">
+			<h3>Save Ideas <br>and Products</h3>
+			<p>Add ideas and products from any website</p> 
+			<img alt="" src="/images/wl_cat_note_200px._V359103046_.jpg" height="143" width="200">
+		</div>
+		<div class="col-lg-3">
+			<h3>Give &amp; Get<br> Great Gifts</h3>
+			<p>Remember your friends' wish lists &amp; share yours</p> 
+			<img alt="" src="/images/wl_cat_gift_200px._V359103041_.jpg" height="143" width="200">
+		</div>
+		<div class="col-lg-3">
+			<h3>Never Forget a<br> Birthday</h3>
+			<p>Get shopping reminders for special occasions</p> 
+			<img alt="" src="/images/wl_cat_calendar_200px._V359103046_.jpg" height="143" width="200">
+		</div>
+	</div>
+</div>    </div>
+
+    <div class="container" >
+        <hr>
+<footer>
+    <div class="row">
+        <div class="col-lg-12">
+            <p>Copyright &copy; NTObjectives 2014</p>
+        </div>
+    </div>
+</footer>
+
+<script type="text/x-template" id="tplAlertContent">
+    <div class="text-center">
+        <a href="#" class="btn btn-primary js-yes">Yes</a>
+        <a href="#" class="btn btn-danger js-no">No</a>
+    </div>
+</script>    </div>
+            <div id="login-box" class="login-popup">
+            <a href="#" class="close" data-toggle="tooltip" data-placement="top" title="Close"><i class="glyphicon glyphicon-remove"></i></a>
+            <form role="form" method="post" class="signin" action="/user/login" id="loginForm">
+                <h2>Please login <small></small></h2>
+                <hr class="colorgraph">
+                <div class="form-group">
+                    <input type="text" maxlength="100" required name="username" id="username" autocomplete="off" class="form-control input-lg" placeholder="Username or Email" tabindex="1">
+                </div>
+                <div class="form-group">
+                    <input type="password" maxlength="100" required name="password" autocomplete="off" id="password" class="form-control input-lg" placeholder="Password" tabindex="5">
+                </div>
+                <hr class="colorgraph">
+                <div class="row">
+                    <div class="col-xs-6 col-md-6"><button id="loginbtn" type="submit" class="btn btn-success btn-block btn-lg">Sign In</button></div>
+                    <div class="col-xs-6 col-md-6">
+                        <div>
+                            <span class="login-social-span">Or login via</span>
+                            <ul class="list-unstyled list-inline list-social-icons">
+                                <li class="tooltip-social facebook-link"><a href="/facebook" data-toggle="tooltip" data-placement="top" title="Facebook"><i class="fa fa-facebook-square fa-3x"></i></a></li>
+                                <li class="tooltip-social twitter-link"><a href="/twitter" data-toggle="tooltip" data-placement="top" title="Twitter"><i class="fa fa-twitter-square fa-3x"></i></a></li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 col-md-6"><a href="/user/password" class="btn btn-info btn-lg" style="width:100%">Forgot your password?</a></div>
+                    <div class="col-xs-6 col-md-6"><a href="/user/register" class="btn btn-info btn-lg" style="width:100%">New user?</a></div>
+                </div>
+            </form>
+        </div>
+
+        <script>
+            //A very basic way to open a popup
+
+            function popup(link, windowname) {
+                window.open(link.href, windowname, 'width=400,height=200,scrollbars=yes');
+                return false;
+            }
+            jQuery(function ($) {
+                $('#loginForm').bootstrapValidator({
+                    feedbackIcons: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    container: 'tooltip'
+                });
+            });
+        </script>
+        </body>
+</html>

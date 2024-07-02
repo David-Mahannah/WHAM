@@ -1,0 +1,90 @@
+body {
+  font-family: arial;
+  color: #111111;
+}
+
+li, ul {
+  list-style-type: none;
+  padding: 0px;
+}
+
+
+input[type=text] {
+  width: 96%;
+  margin: 0px auto 0px auto;
+  display: block;
+}
+
+textarea {
+  width: 96%;
+  margin: 0px auto 0px auto;
+  display: block;
+}
+
+
+#page {
+	height: 95vh;
+	background-color: pink;
+	display: grid;
+	grid-template-areas:
+		'header header header header header'
+		'leftcol leftdragbar tabs tabs tabs'
+		'leftcol leftdragbar tabpages rightdragbar rightcol'
+		'leftcol leftdragbar footer footer footer';
+	grid-template-rows: min-content 1fr 9fr 1fr;
+	grid-template-columns: 2fr 2px 6fr 2px 2fr;	
+}
+
+/*****************************/
+#header {
+	background-color: #F56A00;
+	overflow: auto;
+  padding: 5px;
+	grid-area: header;
+  border-bottom: 1px solid #71808D;
+}
+
+#leftcol {
+	background-color: #D2D9DE;
+	overflow: auto;
+	grid-area: leftcol;
+}
+
+#leftdragbar {
+	grid-area: leftdragbar;
+	cursor: ew-resize;
+  background-color: #71808D;
+}
+
+
+#tabs {
+	background-color: #D2D9DE;
+	overflow: auto;
+	grid-area: tabs;
+  border-bottom: 1px solid #71808D;
+}
+
+#tabpages {
+	background-color: #D2D9DE;
+	grid-area: tabpages;
+}
+
+#rightdragbar {
+	background-color: #71808D;
+	grid-area: rightdragbar;
+	cursor: ew-resize;
+}
+
+
+#rightcol {
+	background-color: #D2D9DE;
+	overflow: auto;
+	grid-area: rightcol;
+}
+
+#footer {
+	background-color: #D2D9DE;
+  border-top: 1px solid #71808d;
+	overflow: auto;
+	grid-area: footer;
+}
