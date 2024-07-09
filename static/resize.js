@@ -31,6 +31,7 @@ function EndDrag() {
 	isLeftDragging = false;
 	isRightDragging = false;
 	
+	document.getElementById("graph_frame").style.visibility = "visible";
 	SetCursor("auto");
 }
 
@@ -38,12 +39,16 @@ function OnDrag(event) {
 	if(isLeftDragging || isRightDragging) {
 		console.log("Dragging");
 		//console.log(event);
-		
+		document.getElementById("graph_frame").style.visibility = "hidden";
 		let page = document.getElementById("page");
 		let leftcol = document.getElementById("leftcol");
-		let rightcol = document.getElementById("rightcol");	
+		let rightcol = document.getElementById("rightcol");
 		
 		let leftColWidth = isLeftDragging ? event.clientX : leftcol.clientWidth;
+    if (leftColWidth < 300)
+    {
+      leftColWidth = 300;
+    }
 		let rightColWidth = isRightDragging ? page.clientWidth - event.clientX : rightcol.clientWidth;
 		
 		let dragbarWidth = 3;

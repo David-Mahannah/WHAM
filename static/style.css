@@ -1,29 +1,41 @@
+html {
+}
+
+
 body {
   font-family: arial;
   color: #111111;
+  margin: 0px;
+  background-color: #71808D;
 }
 
 li, ul {
   list-style-type: none;
-  padding: 0px;
+  
+  -webkit-user-select: none; /* Safari */        
+-moz-user-select: none; /* Firefox */
+-ms-user-select: none; /* IE10+/Edge */
+user-select: none; /* Standard */
+}
+
+ul {
+  padding: 10px;
 }
 
 
 input[type=text] {
-  width: 96%;
+  width: 97%;
   margin: 0px auto 0px auto;
-  display: block;
 }
 
 textarea {
-  width: 96%;
+  width: 97%;
   margin: 0px auto 0px auto;
-  display: block;
+  resize:vertical;
 }
 
-
 #page {
-	height: 95vh;
+  height: 100vh;
 	background-color: pink;
 	display: grid;
 	grid-template-areas:
@@ -48,6 +60,7 @@ textarea {
 	background-color: #D2D9DE;
 	overflow: auto;
 	grid-area: leftcol;
+  min-width: 300px;
 }
 
 #leftdragbar {
@@ -65,7 +78,7 @@ textarea {
 }
 
 #tabpages {
-	background-color: #D2D9DE;
+	background-color: #71808D;
 	grid-area: tabpages;
 }
 
@@ -87,4 +100,12 @@ textarea {
   border-top: 1px solid #71808d;
 	overflow: auto;
 	grid-area: footer;
+}
+
+.popup {
+  position: absolute;
+  order: 5;
+  background-color: #D2D9DE;
+  right: 45%;
+  top: 45%;
 }
