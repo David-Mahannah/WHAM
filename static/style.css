@@ -3,7 +3,7 @@ html {
 
 
 body {
-  font-family: arial;
+  font-family: "Lucida Console";
   color: #111111;
   margin: 0px;
   background-color: #71808D;
@@ -32,6 +32,13 @@ textarea {
   width: 97%;
   margin: 0px auto 0px auto;
   resize:vertical;
+  padding: 6px 10px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 12px;
+
 }
 
 #page {
@@ -53,6 +60,7 @@ textarea {
 	overflow: auto;
   padding: 5px;
 	grid-area: header;
+
   border-bottom: 1px solid #71808D;
 }
 
@@ -60,7 +68,7 @@ textarea {
 	background-color: #D2D9DE;
 	overflow: auto;
 	grid-area: leftcol;
-  min-width: 300px;
+  min-width: 360px;
 }
 
 #leftdragbar {
@@ -93,12 +101,12 @@ textarea {
 	background-color: #D2D9DE;
 	overflow: auto;
 	grid-area: rightcol;
+  padding: 10px;
 }
 
 #footer {
 	background-color: #D2D9DE;
   border-top: 1px solid #71808d;
-	overflow: auto;
 	grid-area: footer;
 }
 
@@ -108,4 +116,88 @@ textarea {
   background-color: #D2D9DE;
   right: 45%;
   top: 45%;
+}#EEF0F2
+
+button {
+  padding: 4px 5px;
+  border: none;
+}
+
+#user_table {
+  border: 1px solid #71808D;
+  padding: 5px;
+}
+
+
+table {
+  width: 100%;
+}
+
+td, th {
+  padding: 3px;
+  margin: 0px;
+}
+
+.role_input {
+  border: none;
+  width: 100%;
+}
+
+
+.delete_role_button {
+  padding: 2px 5px;
+}
+
+#add_user_button {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#add_user_button_container {
+  padding: 0px 4px 0px 4px;
+}
+
+
+
+.dot {
+  height: 15px;
+  width: 15px;
+  background-color: red;
+  border-radius: 50%;
+  display: inline-block;
+  float: left;
+}
+
+
+#color_palette {
+  margin: 0px;
+}
+
+
+.username {
+  margin-left: 5px;
+  height:25px;
+  display: inline-flex;
+  align-items: center;
+}
+
+
+
+details {
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 5px;
+  background-color: #EEF0F2;
+}
+
+summary {
+  font-size: 16px;
+}
+
+.menu_toggle {
+  float: right;
+}
+
+tr {
+  text-align: center;
 }

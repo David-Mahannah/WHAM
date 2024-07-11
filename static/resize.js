@@ -45,9 +45,9 @@ function OnDrag(event) {
 		let rightcol = document.getElementById("rightcol");
 		
 		let leftColWidth = isLeftDragging ? event.clientX : leftcol.clientWidth;
-    if (leftColWidth < 300)
+    if (leftColWidth < 365)
     {
-      leftColWidth = 300;
+      leftColWidth = 365;
     }
 		let rightColWidth = isRightDragging ? page.clientWidth - event.clientX : rightcol.clientWidth;
 		
