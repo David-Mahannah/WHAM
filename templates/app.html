@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">           
   </head>
 
 <body onresize="ResetColumnSizes()">
-		<div id="page" onmouseup="EndDrag()" onmousemove="OnDrag(event)">
+    		<div id="page" onmouseup="EndDrag()" onmousemove="OnDrag(event)">
 			<div id="header">
 				Web Hacker's Application Map
 			</div>
@@ -13,41 +14,72 @@
         <ul>
           <li><span style="font-size: 30px;">Settings</span></li>
           <hr>
-          <li><span style="font-size: 20px;">Target</span></li>
+
+          <details>
+          <summary><span>Target</span></summary>
+          <hr>
+          <div id="target_menu">
           <li><input type="radio" id="URL_Radio" onclick="radio_switch()" checked="checked" name="targetSelector"><b>URL:</b><input type=text id="URL" placeholder="https://google.com"></li>      
           <li><input type="radio" id="Request_Radio" onclick="radio_switch()" name="targetSelector"><b>Request:</b></li>
-          <li><textarea rows="10" cols="30" id="Request" disabled="true">GET / HTTP/2
-Host: www.google.com
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
-Accept-Language: en-US,en;q=0.5
-Accept-Encoding: gzip, deflate, br
-Upgrade-Insecure-Requests: 1
-Sec-Fetch-Dest: document
-Sec-Fetch-Mode: navigate
-Sec-Fetch-Site: none
-Sec-Fetch-User: ?1
-Priority: u=1
-Te: trailers
-
-</textarea></li>
+          <li><textarea rows="10" cols="30" id="Request" disabled="true" placeholder='GET / HTTP/2&#10;Host: www.google.com&#10;Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8&#10;AcceptLanguage: en-US,en;q=0.5&#10;Accept-Encoding: gzip, deflate, br&#10;Upgrade-Insecure-Requests: 1&#10;Sec-Fetch-Dest: document&#10;Sec-Fetch-Mode: navigate&#10;Sec-Fetch-Site: none&#10;Sec-Fetch-User: ?1&#10;Priority: u=1&#10;Te: trailers'></textarea></li>
+          </div>
+          </details>
           <hr>
-          <li><b>Scope:</b><input type=text id="Scope"></li>
+          <details>
+            <summary><span>User Roles</span><input type="checkbox" class="menu_toggle" id="custom_user_roles_checkbox" onclick="custom_user_roles_toggle()"></summary>
+            <hr>
+          <li>
+            <div id="user_table">
+            <table id="auth_table">
+              <tr>
+                <th>User</th>
+                <th>Session Header</th>
+              </tr>
+              <tr>
+                <td><input disabled class="role_input"></td>
+                <td><input disabled class="role_input"></td>
+                <td><button disabled style="visibility:hidden;" class="delete_role_button" tabindex="-1">X</button></td>
+              </tr>
+            </table>
+            <div id="add_user_button_container">
+              <button disabled id="add_user_button" onclick="addme()">Add User</button>
+            <div>
+          </div>
+          </li>
+          </details>
+          <hr>
+          <details>
+            <summary>Scope<input type="checkbox" id="scope_toggle" class="menu_toggle" onclick="custom_scope_toggle()"></summary>
+            <hr>
+            <div id="scope_menu">
+              <input disabled type=text id="Scope">
+            </div>
+            </details>
           <hr>
 
-
-          <li><input type=checkbox onclick="proxy_toggle()"><span style="font-size: 20px;">Proxy</span></li>
-          <li><input type=textbox placeholder="http://127.0.0.1" disabled="true" size="14" id="ProxyHost">:<input type=textbox size="6" placeholder="8080" id="ProxyPort" disabled="true"></li>
-          <li><span style="font-size: 16px;">Certificate:<input type=file Name="Certificate" id="Cert" disabled="true"></li>
-
-
+          <details>
+            <summary><span>Proxy</span><input type=checkbox id="ProxyCheckBox" class="menu_toggle" onclick="proxy_toggle()"></summary>
           <hr>
-          <li><span style="font-size: 20px;">Behavior</span></li>
-          <li><input type=checkbox onclick="delay_toggle()"><b>Delay:</b><input type=textbox size="10" id="DelayMS" disabled="true">ms</li>
-          <li><b>Depth:</b><input type=textbox size="10" id="Depth" value="3"></li>
-
+          <div id="proxy_menu">
+            <li><input type=textbox placeholder="http://127.0.0.1" disabled="true" size="14" id="ProxyHost">:<input type=textbox size="6" placeholder="8080" id="ProxyPort" disabled="true"></li>
+            <li><span style="font-size: 16px;">Certificate:<input type=text Name="Certificate" id="Cert" disabled="true"></li>
+          </div>
+          </details>
           <hr>
-          <li><input type=button value="Run" onclick="run()" style="width:100%"></li>
-          <li><input type=button value="Cancel" onclick="cancel()" style="width:100%"></li>
+          <details>
+            <summary><span>Behavior</span></summary>
+            <hr>
+          <div id="behavior_menu">
+            <li><input type=checkbox id="DelayCheckBox" onclick="delay_toggle()"><b>Delay:</b><input type=textbox size="10" id="DelayMS" disabled="true">seconds</li>
+            <li><b>Depth:</b><input type=textbox size="10" id="Depth" value="3"></li>
+            <li><b>Thread count:</b><input type=textbox size="10" id="ThreadCount" value="1"></li>
+          </div>
+          </details>
+          <hr>
+          <li><button id="run_button" onclick="run()" style="width:100%">Run</button></li>
+          <li><button onclick="cancel()" id="cancel_button" disabled style="width:100%; margin-top:5px;">Cancel</button></li>
+          <br>
+          <li><span id="server_response"></span></li>
         </ul>
 			</div>
 			<div id="leftdragbar" onmousedown="StartLeftDrag()"></div>
@@ -57,25 +89,70 @@ Te: trailers
 			<div id="tabpages">
         <iframe src="{{ url_for('static', filename='map.html') }}" width="100%" height="100%" id="graph_frame" scrolling="no" frameBorder="0"></iframe>
 			</div>
-			<div id="rightdragbar" onmousedown="StartRightDrag()"></div>
+
+      <!-- Right Menu -->
+
+      <div id="rightdragbar" onmousedown="StartRightDrag()"></span></div>
 			<div id="rightcol">
-        <!--
-        <ul>
-          <li><span style="font-size: 30px;">Filter Results:</span></li>
-          <li><b>Search:</b><input type=textbox></li>
-          <li><b>MIME type</b></li>
-          <li><input type=checkbox value=""><label>HTML</label></li>
-          <li><input type=checkbox value=""><label>Script</label></li>
-          <li><input type=checkbox value=""><label>XML</label></li>
-          <li><input type=checkbox value=""><label>Other text</label></li>
-          <li><input type=checkbox value=""><label>Images</label></li>
-          <li><input type=checkbox value=""><label>Other</label></li>
-        </ul>
-        -->
+        <details>
+          <summary><span>Filter</span></summary>
+            <ul>
+              <li></li>
+              <li><input id="SearchTextbox" style="width:95%" type=textbox></li>
+              <li><input id="NegativeSearchCheckbox" type=checkbox>Negative search</li>
+              <li><input id="ShowNeighborsOfMatches" type=checkbox>Show neighbors</li>
+              <li><input id="RegexMode" type=checkbox>Regex Search</li>
+              <li><button onclick="search()">Search</button></li>
+            </ul>
+        </details> 
+        <br>
+        <details>
+          <summary><span>Users</span></summary>
+          <table id="user_color_table">
+            <tr>
+              <th>Color</th>
+              <th>Name</th>
+            </tr>
+          </table>
+        </details>
+        <br>
+        <details>
+          <summary><span>Sites</span></summary>
+          <table id="auth_table">
+            <tr>
+              <th>Color</th>
+              <th>Domain</th>
+            </tr>
+            <tr>
+              <td><input type=color></span></td>
+              <td><span class="username">user1</span></td>
+              <td><button disabled style="visibility:hidden;" class="delete_role_button" tabindex="-1">x</button></td>
+            </tr>
+            <tr>
+              <td><input type=color></span></td>
+              <td><span class="username">domain1</span></td>
+              <td><button disabled style="visibility:hidden;" class="delete_role_button" tabindex="-1">x</button></td>
+            </tr>
+            <tr>
+              <td><input type=color></span></td>
+              <td><span class="username">domain1</span></td>
+              <td><button disabled style="visibility:hidden;" class="delete_role_button" tabindex="-1">x</button></td>
+            </tr>
+          </table>
+        </details>
 			</div>
+
+
+
+      <!-- Footer Menu -->
+
 			<div id="footer">
+        <div style="width:50%">
+
+        </div>
       </div>
 		</div>
+
     <script src="{{ url_for('static', filename='resize.js') }}"></script>
     <script src="{{ url_for('static', filename='api.js') }}"></script>
     <script src="{{ url_for('static', filename='settings.js') }}"></script>

@@ -205,5 +205,22 @@ class WebServer:
             else:
                 pass
 
+
+        @app.route('/api/update_colors', methods=['POST'])
+        def update_colors():
+            if request.method == 'POST':
+                color_dict = {}
+                body = request.get_json()
+                for user_group, color_hex in body.items():
+                    user_tuple = tuple(user_group.replace(" ", "").split(','))
+                    color_dict[user_tuple] = color_hex
+                    print(user_group, color_hex)
+
+                self.network_graph.updateColorMap(color_dict)
+                self.network_graph.visualize()
+                return jsonify({"Message":"Filter applied."}), 200
+            else:
+                pass
+
         return app
 
