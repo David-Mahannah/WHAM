@@ -24,6 +24,8 @@ class WebServer:
         @app.route('/api/run', methods=['POST'])
         def run():
             if request.method == 'POST':
+                self.cancel = False
+
                 body = request.get_json();
                 
                 if body['URL'] == '':
@@ -65,6 +67,9 @@ class WebServer:
                     scope = body['Scope'].replace(', ', ',').split(',')
 
                 for user in auth_dict.keys():
+                    if self.cancel == True:
+                        break
+
                     print("Running for", user)
 
                     headers = temp_headers
@@ -175,6 +180,7 @@ class WebServer:
         @app.route('/api/cancel', methods=['POST'])
         def cancel():
             if request.method == 'POST':
+                self.cancel = True
                 data = {"Result":"Task cancelled. Partial results displayed"}
                 for t in self.crawler_manager.thread_pool:
                     t.cancel()
