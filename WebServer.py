@@ -4,6 +4,7 @@ from flask import render_template
 import datetime
 from Tools import verbosePrint
 from NetworkGraph import NetworkGraph
+from GraphHandling import *
 import urllib3
 import re
 
@@ -36,7 +37,7 @@ class WebServer:
                 print("Auth:", body['Auth'])
                
 
-
+                graph = Graph()
 
                 auth_dict = body['Auth']
 
@@ -66,6 +67,9 @@ class WebServer:
                 else:
                     scope = body['Scope'].replace(', ', ',').split(',')
 
+
+                graph.generateGroups(auth_dict.keys())
+                
                 for user in auth_dict.keys():
                     if self.cancel == True:
                         break
@@ -106,71 +110,13 @@ class WebServer:
                                                                       proxy, 
                                                                       int(body['ThreadCount']),
                                                                       delay)
+                  
+                    graph.addNodes(user,node_dict)
+                    graph.addEdges(edge_list)
 
-                    
-                    print("Node DICT:", node_dict)
-                    all_edge_lists.append(edge_list) 
-                    pairs = []
-                    for key in node_dict.keys():
-                        for item in node_dict[key]:
-                            pairs.append((key, item))
-                    all_pairs.append((user, pairs))
-                
-                
-                edge_list = set().union(*all_edge_lists)
-                big_dict = {}
-                
-                c=[]
-                for i in range(num_users):
-                    c.extend(itertools.combinations(all_pairs, i+1))
-                
-                print(c)
-                for group in c:
-                    #print("Group:", group)
-                    new_key = set()
-                    for user in group:
-                        new_key.add(user[0])
-                    #print(group)
-
-                    print("Joining", set(group[0][1]))
-                    pairs = set(group[0][1])
-                    for user in group[1:]:
-                        #print("  ", user)
-                        print("With", set(user[1]))
-                        pairs = pairs.intersection(set(user[1]))
-                    big_dict[tuple(new_key)] = pairs
-
-                print(big_dict)
-
-                merged_dict = {}
-                for pair_key in big_dict.keys():
-                    site_dict = {}
-                    for sites in big_dict[pair_key]:
-                        if sites[0] not in site_dict.keys():
-                            site_dict[sites[0]] = []
-
-                        site_dict[sites[0]].append(sites[1])
-                    merged_dict[pair_key] = site_dict
-
-                print(merged_dict)
-
-                stop = datetime.datetime.now()
-                runtime = stop - start_time
-                print("Total runtime: " + str(runtime.total_seconds() * 1000) + " msec")
-
-
-                # Edge list needs to be converted to preferred format for NetworkX
-                edge_list = [t for t in edge_list]
-                self.network_graph.setEdgeList(edge_list)
-                self.network_graph.parseNodeDict(merged_dict)
-
-                self.network_graph.visualize()
-
-                color_map = self.network_graph.getColorMap()
-                edited_color_map = []
-                for key, value in color_map.items():
-                    edited_color_map.append([list(key), value])
-                return jsonify({"Message":"Mapping complete.", "Users" : edited_color_map}), 200
+                response_JSON = graph.beautifyForJSON()
+                response_JSON["Message"] = "Mapping complete"
+                return jsonify(response_JSON), 200
 
             else:
                 # Error 405 - Method not allowed

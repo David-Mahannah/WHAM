@@ -84,6 +84,12 @@ class NetworkGraph:
     def setNodeList(self, node_list):
         self.node_list = node_list
 
+    def getNodeList(self):
+        return self.node_list
+
+    def getEdgeList(self):
+        return self.edge_list
+
     '''
         
     '''
@@ -118,6 +124,7 @@ class NetworkGraph:
             # For further processing
             self.raw_node_list.append((maximum, path, {"color":color}))
 
+        
         self.node_list.reverse()
 
 
@@ -134,17 +141,8 @@ class NetworkGraph:
         return self.color_map
 
     def updateColorMap(self, new_color_map):
-        print('----------------------B4-------------------------------')
-        print(new_color_map)
-        print(self.color_map)
-        print('-----------------------------------------------------------')
         for key, value in new_color_map.items():
             self.color_map[key] = value;
-
-        print('----------------------After----------------------------------')
-        print(new_color_map)
-        print(self.color_map)
-        print('-----------------------------------------------------------')
         self.applyColors()
 
     def applyColors(self):

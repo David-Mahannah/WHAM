@@ -13,13 +13,17 @@ function run() {
     if (this.readyState == 4 && this.status == 200) {
       let response_json = JSON.parse(this.responseText);
       console.log("Success")
-      document.getElementById('graph_frame').contentWindow.location.reload();
+      //document.getElementById('graph_frame').contentWindow.location.reload();
       document.getElementById('server_response').innerText = JSON.parse(this.responseText)['Message']; 
-      document.getElementById('graph_frame').contentWindow.location.reload();
+
+      loadData(response_json['node_list'], response_json['edge_list'])
+
+      //document.getElementById('graph_frame').contentWindow.location.reload();
       document.getElementById("run_button").innerHTML='Run';
       document.getElementById("run_button").disabled = false;
       document.getElementById("cancel_button").disabled = true;
 
+      /*
       table = document.getElementById('user_color_table');
       new_row = table.insertRow(-1);
       new_row.insertCell(0).innerHTML = '<th>Color</th>'
@@ -31,6 +35,9 @@ function run() {
         let cell1 = new_row.insertCell(0).innerHTML = '<input type=color value="'+ users[i][1]+'" onchange=\'update_colors()\'></span>'
         let cell2 = new_row.insertCell(1).innerHTML = '<span class="user_group">'+ users[i][0]+'</span>'
       }
+      */
+       //loadData(response_json['nodes'], response_json['edges'])
+
 
     } else if (this.readyState == 4) {
       console.log("Failure" + this.readyState)
@@ -126,8 +133,7 @@ function update_colors()
     {
       let row = table.rows[i];
       let user = row.cells[1].innerText;
-      if (user != '')
-      {
+      if (user != '') {
         color_data[user] = row.cells[0].getElementsByTagName('input')[0].value;
       }
     }
@@ -161,7 +167,7 @@ function deleteme(element) {
 function addme() {
   table = document.getElementById('auth_table');
   new_row = table.insertRow(-1);
-  let cell1 = new_row.insertCell(0).innerHTML = '<input class="role_input">'
-  let cell2 = new_row.insertCell(1).innerHTML = '<input class="role_input">'
+  let cell1 = new_row.insertCell(0).innerHTML = '<input type="text" class="role_input">'
+  let cell2 = new_row.insertCell(1).innerHTML = '<input type="text" class="role_input">'
   let cell3 = new_row.insertCell(2).innerHTML = '<button class="delete_role_button" tabindex="-1" onclick="deleteme(this)">X</button>'
 }

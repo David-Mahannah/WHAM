@@ -3,8 +3,8 @@ let isRightDragging = false;
 
 function ResetColumnSizes() {
 	// when page resizes return to default col sizes
-	let page = document.getElementById("pageFrame");
-	page.style.gridTemplateColumns = "3fr 3px 6fr 3px 2fr";
+  //let page = document.getElementById("pageFrame");
+  //page.style.gridTemplateColumns = "3fr 3px 6fr 3px 2fr";
 }
 
 function SetCursor(cursor) {

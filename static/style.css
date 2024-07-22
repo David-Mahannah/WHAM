@@ -4,7 +4,7 @@ html {
 
 body {
   font-family: "Lucida Console";
-  color: #111111;
+  color: gainsboro;
   margin: 0px;
   background-color: #71808D;
 }
@@ -26,9 +26,13 @@ ul {
 input[type=text] {
   width: 97%;
   margin: 0px auto 0px auto;
+  background-color: rgb(80, 80, 80);
+  color: gainsboro;
+  border: 2px solid #71808D;
 }
 
 textarea {
+  color: gainsboro;
   width: 97%;
   margin: 0px auto 0px auto;
   resize:vertical;
@@ -36,7 +40,8 @@ textarea {
   box-sizing: border-box;
   border: 2px solid #ccc;
   border-radius: 4px;
-  background-color: #f8f8f8;
+  background-color: rgb(80, 80, 80);
+  border: 2px solid #71808D;
   font-size: 12px;
 
 }
@@ -56,7 +61,8 @@ textarea {
 
 /*****************************/
 #header {
-	background-color: #F56A00;
+
+  background-color: #f56a00;
 	overflow: auto;
   padding: 5px;
 	grid-area: header;
@@ -65,7 +71,7 @@ textarea {
 }
 
 #leftcol {
-	background-color: #D2D9DE;
+  background: rgb(47, 47, 47);
 	overflow: auto;
 	grid-area: leftcol;
   min-width: 360px;
@@ -79,14 +85,17 @@ textarea {
 
 
 #tabs {
-	background-color: #D2D9DE;
+  background-color: rgb(47, 47, 47);
+
+
 	overflow: auto;
 	grid-area: tabs;
   border-bottom: 1px solid #71808D;
 }
 
 #tabpages {
-	background-color: #71808D;
+  background-color: rgb(47, 47, 47);
+
 	grid-area: tabpages;
 }
 
@@ -98,14 +107,15 @@ textarea {
 
 
 #rightcol {
-	background-color: #D2D9DE;
+  background-color: rgb(47, 47, 47);
+
 	overflow: auto;
 	grid-area: rightcol;
   padding: 10px;
 }
 
 #footer {
-	background-color: #D2D9DE;
+  background-color: rgb(47, 47, 47);
   border-top: 1px solid #71808d;
 	grid-area: footer;
 }
@@ -184,10 +194,11 @@ td, th {
 
 
 details {
-  border: 1px solid black;
+  border: 1px solid #71808D;
   border-radius: 4px;
   padding: 5px;
-  background-color: #EEF0F2;
+  background-color: rgb(80, 80, 80);
+
 }
 
 summary {
@@ -200,4 +211,8 @@ summary {
 
 tr {
   text-align: center;
+}
+
+#show {
+  height: 99%;
 }

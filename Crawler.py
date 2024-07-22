@@ -89,7 +89,10 @@ class WorkerThread(threading.Thread):
             to_add_prev_url = RT.extractPresentablePath(generic_prev_url)
             to_add_next_url = RT.extractPresentablePath(generic_url)
             
-            new_edge = (to_add_prev_url, to_add_next_url)
+            next_domain = urllib3.util.parse_url(next_url).host
+            prev_domain = urllib3.util.parse_url(prev_url).host
+
+            new_edge = ((prev_domain, to_add_prev_url), (next_domain, to_add_next_url))
 
             # Does the thread need to hold the lock here?
             with self.lock:
@@ -98,9 +101,6 @@ class WorkerThread(threading.Thread):
                     # Edge already exists. SKIP
                     continue
             
-
-
-
 
             # Retrieve the current URL
             print('[Thread #%s]: Attempting: %s' % (self.ident, next_url))
