@@ -36,8 +36,8 @@
                 <th>Session Header</th>
               </tr>
               <tr>
-                <td><input disabled class="role_input"></td>
-                <td><input disabled class="role_input"></td>
+                <td><input type="text" disabled class="role_input"></td>
+                <td><input type="text" disabled class="role_input"></td>
                 <td><button disabled style="visibility:hidden;" class="delete_role_button" tabindex="-1">X</button></td>
               </tr>
             </table>
@@ -61,7 +61,7 @@
             <summary><span>Proxy</span><input type=checkbox id="ProxyCheckBox" class="menu_toggle" onclick="proxy_toggle()"></summary>
           <hr>
           <div id="proxy_menu">
-            <li><input type=textbox placeholder="http://127.0.0.1" disabled="true" size="14" id="ProxyHost">:<input type=textbox size="6" placeholder="8080" id="ProxyPort" disabled="true"></li>
+            <li><div style="width:40%; float: left;"><input type=text placeholder="http://127.0.0.1" disabled="true" size="14" id="ProxyHost"></div><div style="float:left;margin-left: 5px;">:</div><div style="width:30%; float:left;"><input type=text size="6" placeholder="8080" id="ProxyPort" disabled="true"></div></li>
             <li><span style="font-size: 16px;">Certificate:<input type=text Name="Certificate" id="Cert" disabled="true"></li>
           </div>
           </details>
@@ -87,7 +87,8 @@
 
 			</div>
 			<div id="tabpages">
-        <iframe src="{{ url_for('static', filename='map.html') }}" width="100%" height="100%" id="graph_frame" scrolling="no" frameBorder="0"></iframe>
+        <div id="show">
+        </div>
 			</div>
 
       <!-- Right Menu -->
@@ -152,10 +153,15 @@
         </div>
       </div>
 		</div>
-
+    <script
+      type="text/javascript"
+      src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"
+    ></script>
     <script src="{{ url_for('static', filename='resize.js') }}"></script>
     <script src="{{ url_for('static', filename='api.js') }}"></script>
     <script src="{{ url_for('static', filename='settings.js') }}"></script>
+    <script src="{{ url_for('static', filename='visualizer.js') }}"></script>
+    <script>init();</script>
 </body>
 </html>
 

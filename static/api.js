@@ -1,6 +1,44 @@
 
 
 
+
+
+function init() {
+
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    console.log("Response received.");
+    if (this.readyState == 4 && this.status == 200) {
+      let response_json = JSON.parse(this.responseText);
+      console.log("Success");
+      let server_response_msg = JSON.parse(this.responseText)['Message'];
+      document.getElementById('server_response').innerText = server_response_msg; 
+      if (server_response_msg != "Failed to load previous graph data.")
+      {
+        loadData(response_json['node_list'], response_json['edge_list'])
+      }
+
+      document.getElementById('user_color_table').innerHTML = '';
+      table = document.getElementById('user_color_table');
+      new_row = table.insertRow(-1);
+      new_row.insertCell(0).innerHTML = '<th>Color</th>'
+      new_row.insertCell(1).innerHTML = '<th>Name</th>'
+      let users = response_json["groups"];
+      for (const [key, value] of Object.entries(users))
+      {
+        new_row = table.insertRow(-1);
+        let cell1 = new_row.insertCell(0).innerHTML = '<input id="' + value + '" type=color value="'+ options.groups[value]['color']['background']+'" onchange=\'update_colors(this)\'></span>'
+        let cell2 = new_row.insertCell(1).innerHTML = '<span class="user_group">'+key+'</span>'
+      }
+    }
+  }
+  xhttp.open("get", "/api/graph", true);
+  xhttp.send();
+  //xhttp.setRequestHeader("content-type", "application/json;charset=UTF-8");
+}
+
+
+
 function run() {
   document.getElementById("run_button").innerHTML='Running... <i class="fa fa-spinner fa-spin">';
   document.getElementById("run_button").disabled = true;
@@ -13,24 +51,32 @@ function run() {
     if (this.readyState == 4 && this.status == 200) {
       let response_json = JSON.parse(this.responseText);
       console.log("Success")
-      document.getElementById('graph_frame').contentWindow.location.reload();
+      //document.getElementById('graph_frame').contentWindow.location.reload();
       document.getElementById('server_response').innerText = JSON.parse(this.responseText)['Message']; 
-      document.getElementById('graph_frame').contentWindow.location.reload();
+
+      loadData(response_json['node_list'], response_json['edge_list'])
+
+      //document.getElementById('graph_frame').contentWindow.location.reload();
       document.getElementById("run_button").innerHTML='Run';
       document.getElementById("run_button").disabled = false;
       document.getElementById("cancel_button").disabled = true;
 
+      
       table = document.getElementById('user_color_table');
       new_row = table.insertRow(-1);
       new_row.insertCell(0).innerHTML = '<th>Color</th>'
       new_row.insertCell(1).innerHTML = '<th>Name</th>'
-      let users = response_json["Users"];
-      for (let i = 0; i < users.length; i++)
+      let users = response_json["groups"];
+      for (const [key, value] of Object.entries(users))
       {
         new_row = table.insertRow(-1);
-        let cell1 = new_row.insertCell(0).innerHTML = '<input type=color value="'+ users[i][1]+'" onchange=\'update_colors()\'></span>'
-        let cell2 = new_row.insertCell(1).innerHTML = '<span class="user_group">'+ users[i][0]+'</span>'
+
+        let cell1 = new_row.insertCell(0).innerHTML = '<input id="' + value + '" type=color value="'+ options.groups[value]['color']['background']+'" onchange=\'update_colors(this)\'></span>'
+        let cell2 = new_row.insertCell(1).innerHTML = '<span class="user_group">'+key+'</span>'
       }
+      
+       //loadData(response_json['nodes'], response_json['edges'])
+
 
     } else if (this.readyState == 4) {
       console.log("Failure" + this.readyState)
@@ -118,16 +164,19 @@ function search() {
 }
 
 
-function update_colors() 
+function update_colors(element) 
 {
+  console.log("Updating group: " + element.id);
+  options.groups[element.id] = {color: {background: element.value}}
+  network.setOptions(options);
+    /*
     color_data = {}
     table = document.getElementById("user_color_table");
     for (let i = 1; i < table.rows.length; i++)
     {
       let row = table.rows[i];
       let user = row.cells[1].innerText;
-      if (user != '')
-      {
+      if (user != '') {
         color_data[user] = row.cells[0].getElementsByTagName('input')[0].value;
       }
     }
@@ -150,6 +199,7 @@ function update_colors()
     xhttp.open("post", "/api/update_colors", true);
     xhttp.setRequestHeader("content-type", "application/json;charset=UTF-8");
     xhttp.send(JSON.stringify(color_data));
+    */
 }
 
 
@@ -161,7 +211,7 @@ function deleteme(element) {
 function addme() {
   table = document.getElementById('auth_table');
   new_row = table.insertRow(-1);
-  let cell1 = new_row.insertCell(0).innerHTML = '<input class="role_input">'
-  let cell2 = new_row.insertCell(1).innerHTML = '<input class="role_input">'
+  let cell1 = new_row.insertCell(0).innerHTML = '<input type="text" class="role_input">'
+  let cell2 = new_row.insertCell(1).innerHTML = '<input type="text" class="role_input">'
   let cell3 = new_row.insertCell(2).innerHTML = '<button class="delete_role_button" tabindex="-1" onclick="deleteme(this)">X</button>'
 }

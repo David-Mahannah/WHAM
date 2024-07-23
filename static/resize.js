@@ -3,8 +3,8 @@ let isRightDragging = false;
 
 function ResetColumnSizes() {
 	// when page resizes return to default col sizes
-	let page = document.getElementById("pageFrame");
-	page.style.gridTemplateColumns = "3fr 3px 6fr 3px 2fr";
+  //let page = document.getElementById("pageFrame");
+  //page.style.gridTemplateColumns = "3fr 3px 6fr 3px 2fr";
 }
 
 function SetCursor(cursor) {
@@ -31,15 +31,13 @@ function EndDrag() {
 	isLeftDragging = false;
 	isRightDragging = false;
 	
-	document.getElementById("graph_frame").style.visibility = "visible";
+  //document.getElementById("graph_frame").style.visibility = "visible";
 	SetCursor("auto");
 }
 
 function OnDrag(event) {
 	if(isLeftDragging || isRightDragging) {
-		console.log("Dragging");
-		//console.log(event);
-		document.getElementById("graph_frame").style.visibility = "hidden";
+		//document.getElementById("graph_frame").style.visibility = "hidden";
 		let page = document.getElementById("page");
 		let leftcol = document.getElementById("leftcol");
 		let rightcol = document.getElementById("rightcol");
