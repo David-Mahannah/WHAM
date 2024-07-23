@@ -18,6 +18,8 @@ then navigate to 127.0.0.1:5000 in your browser
 
 <img src="screenshot.png">
 
+![image](https://github.com/user-attachments/assets/81b4b73a-dfba-478a-89e1-3f0646a348ef)
+
 ### Contributions
 
-![image](https://github.com/user-attachments/assets/81b4b73a-dfba-478a-89e1-3f0646a348ef)
+
