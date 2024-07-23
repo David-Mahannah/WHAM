@@ -6,11 +6,14 @@ from Tools import verbosePrint
 from GraphHandling import *
 import urllib3
 import re
+from ApplicationState import State
+
 
 class WebServer:
     def __init__(self, crawler_manager):
         self.crawler_manager = crawler_manager
         self.graph = None
+        self.state = State()
 
     def create_app(self, test_config=None):
         # create and configure the app
@@ -39,11 +42,14 @@ class WebServer:
             if request.method == 'POST':
                 self.cancel = False
 
-                body = request.get_json();
+                body = request.get_json(); 
+
+
                 
-                if body['URL'] == '':
+
+                if body["Target"]['URL']["value"] == '':
                     return jsonify({"Message":"Target URL not provided"}), 200
-                if body["Request"] == '':
+                if body["Target"]["Request"]["value"] == '':
                     return jsonify({"Message":"Target Request not provided"}), 200
 
                 print("Auth:", body['Auth'])
@@ -51,7 +57,7 @@ class WebServer:
 
                 self.graph = Graph()
 
-                auth_dict = body['Auth']
+                auth_dict = body["User_Roles"]["Roles"]
 
                 all_edge_lists = []
                 all_pairs = []
@@ -60,7 +66,7 @@ class WebServer:
 
                 temp_headers = {}
                 if body["Request"] != 'Disabled':
-                    req = body["Request"]
+                    req = body["Target"]["Request"]["value"]
                     print(req)
                     parts = req.split("\n")
                     url = re.findall("GET\s(\S*)\sHTTP", parts[0])[0]
@@ -74,10 +80,10 @@ class WebServer:
                 else:
                     url = body["URL"]
 
-                if body['Scope'] == 'Disabled':
+                if body["Scope"]["Enabled"] == False:
                     scope = [urllib3.util.parse_url(url).host]
                 else:
-                    scope = body['Scope'].replace(', ', ',').split(',')
+                    scope = body["Scope"]["Domain"].replace(', ', ',').split(',')
 
 
                 self.graph.generateGroups(auth_dict.keys())
@@ -94,12 +100,12 @@ class WebServer:
                     headers[auth_header[0]] = auth_header[1]
                     
                     proxy = None
-                    if body['ProxyHost'] != '' and body['ProxyHost'] != 'Disabled':
-                        proxy = body['ProxyHost'] + ':' + body['ProxyPort']
+                    if body["Proxy"]["Host"] != '' and body["Proxy"]["Enabled"] == True:
+                        proxy = body["Proxy"]["Host"] + ':' + body["Proxy"]["Port"]
 
                     delay = 0
-                    if body['DelayMS'] != 'Disabled':
-                        delay = body['DelayMS']
+                    if body["Behavior"]["Delay"]["Enabled"] == True:
+                        delay = body["Behavior"]["Delay"]["MS"]
 
                     print("SCOPE")
                     print(scope)
@@ -117,10 +123,10 @@ class WebServer:
                     edge_list, node_dict = self.crawler_manager.start(url,
                                                                       headers,
                                                                       scope,
-                                                                      int(body['Depth']), 
+                                                                      int(body['Behavior']['Depth']), 
                                                                       True, 
                                                                       proxy, 
-                                                                      int(body['ThreadCount']),
+                                                                      int(body['Behavior']['ThreadCount']),
                                                                       delay)
                   
                     self.graph.addNodes(user,node_dict)

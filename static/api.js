@@ -1,9 +1,6 @@
 
 
 
-
-
-
 function populateGroupColorTable(users) {
     document.getElementById('user_color_table').innerHTML = '';
     table = document.getElementById('user_color_table');
@@ -48,6 +45,10 @@ function init() {
 
 
 
+function gebid(id) {
+  return document.getElementById(id);
+}
+
 function run() {
   document.getElementById("run_button").innerHTML='Running... <i class="fa fa-spinner fa-spin">';
   document.getElementById("run_button").disabled = true;
@@ -86,7 +87,8 @@ function run() {
       auth_data[user] = row.cells[1].getElementsByTagName('input')[0].value;
     }
   }
-
+  
+  /*
   var formData = 
     {"URL":       ((document.getElementById('URL_Radio').checked) ? document.getElementById('URL').value : 'Disabled'),
      "Request":   ((document.getElementById('Request_Radio').checked) ? document.getElementById('Request').value : 'Disabled'),
@@ -99,7 +101,38 @@ function run() {
      "ThreadCount": document.getElementById('ThreadCount').value,
      "Auth":      ((document.getElementById('custom_user_roles_checkbox').checked) ? auth_data : {"default_header":"WHAM:WHAM"})
   }
-  xhttp.send(JSON.stringify(formData));
+  */
+
+  var applicate_state = {
+    "Target": {
+      "URL": {"Enabled": gebid('URL_Radio').checked, "value": gebid('URL').value},
+      "Request": { "Enabled": gebid('Request_Radio'), "value": gebid('Request')},
+    },
+    "User_Roles": {
+      "Roles": (gebid('custom_user_roles_checkbox').checked ? auth_data : "default_header":"WHAM:WHAM"})
+    },
+    "Scope": {
+      "Enabled":gebid('scope_toggle').checked,
+      "Domain":gebid('Scope').value
+    },
+    "Proxy": {
+      "Enabled":gebid('ProxyCheckBox').checked,
+      "Host":gebid('ProxyHost').value,
+      "Port":gebid('ProxyPort').value,
+      "Certificate":"NA"
+    },
+    "Behavior": {
+      "Delay": {
+        "Enabled": gebid('DelayCheckBox').checked, 
+        "MS": gebid('DelayMS').value
+      }
+      "Depth": gebid('Depth').value,
+      "ThreadCount": gebid('ThreadCount')
+    }
+  }
+  
+  xhttp.send(JSON.stringify(application_state));
+  //xhttp.send(JSON.stringify(formData));
 }
 
 function cancel() {
