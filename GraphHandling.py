@@ -48,7 +48,7 @@ class Graph:
         if self._edge_list == None:
             self._edge_list = new_edge_list
         else:
-            self._edge_list = list(self._edge_list.union(new_edge_list))
+            self._edge_list = list(set(self._edge_list).union(new_edge_list))
 
     def getGroups(self):
         return _group
@@ -75,7 +75,7 @@ class Graph:
                                    "path":path,
                                    "label":path,
                                    "user_group":group,
-                                   "group":self._groups[tuple(group)]})
+                                   "group":str(self._groups[tuple(group)])})
             
         
         JSON_edge_list = []
@@ -83,6 +83,6 @@ class Graph:
             JSON_edge_list.append({"to":  id_map[(edge[0][0],edge[0][1])],
                                    "from":id_map[(edge[1][0],edge[1][1])]})
         
-        output = {"node_list": JSON_node_list, "edge_list": JSON_edge_list}
+        output = {"node_list": JSON_node_list, "edge_list": JSON_edge_list, "groups": {str(key):val for key, val in self._groups.items()}}
 
         return output

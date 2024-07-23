@@ -1,5 +1,6 @@
 
-
+var network;
+var options;
 /*
 
 {
@@ -30,29 +31,9 @@ function loadData(nodes, edges) {
   // Add to network
   console.log(nodes)
   let vis_nodes = new vis.DataSet(nodes);
-  /*
-  var vis_nodes = new vis.DataSet([
-      { id: 1, label: "Node 1" },
-      { id: 2, label: "Node 2" },
-      { id: 3, label: "Node 3" },
-      { id: 4, label: "Node 4" },
-      { id: 5, label: "Node 5" },
-    ]);
-  */
-
-
   console.log(edges)
   // create an array with edges
   let vis_edges = new vis.DataSet(edges);
-  /**
-  var vis_edges = new vis.DataSet([
-    { from: 1, to: 3 },
-    { from: 1, to: 2 },
-    { from: 2, to: 4 },
-    { from: 2, to: 5 },
-    { from: 3, to: 3 },
-  ]);
-  */
 
   // create a network
   var container = document.getElementById("show");
@@ -61,30 +42,29 @@ function loadData(nodes, edges) {
     edges: vis_edges,
   };
 
-  var options = {
+  options = {
+    groups: {
+      '0': {color: {background: '#f56a00', border: 'white'}},
+      '1': {color: {background: '#255C99'}},
+      '2': {color: {background: '#7FB285'}},
+      '3': {color: {background: '#AF1B3F'}},
+      '4': {color: {background: '#4D243D'}},
+      '5': {color: {background: '#FCC521'}},
+      '6': {color: {background: '#E2FFD6'}},
+    },
     nodes: {
       shape: 'box',
-      font: {
-        size: 12,
-      },
-      shadow: {
-        enabled: true
-      }
+      font: { size: 12 },
+      shadow: { enabled: true }
     },
     edges: {
-      font: {
-        align: "top"
-      },
-      smooth: {
-        type: "discrete"
-      },
+      font: { align: "top" },
+      smooth: { type: "discrete" },
       arrows: {
         to: {enabled: true, scaleFactor: 1, type: "arrow"}
       }
     },
-    layout: {
-        improvedLayout: true,
-    },
+    layout: { improvedLayout: true },
     physics: {
       // Even though it's disabled the options still apply to network.stabilize().
       enabled: false,
@@ -95,13 +75,9 @@ function loadData(nodes, edges) {
     },
   };
 
-  var network = new vis.Network(container, data, options);
+  network = new vis.Network(container, data, options);
   network.stabilize();
 }
-
-
-
-
 
 function addEdge() {
 

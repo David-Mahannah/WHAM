@@ -3,7 +3,6 @@ from flask import Flask, request, jsonify
 from flask import render_template
 import datetime
 from Tools import verbosePrint
-from NetworkGraph import NetworkGraph
 from GraphHandling import *
 import urllib3
 import re
@@ -11,7 +10,7 @@ import re
 class WebServer:
     def __init__(self, crawler_manager):
         self.crawler_manager = crawler_manager
-        self.network_graph = NetworkGraph()
+        self.graph = None
 
     def create_app(self, test_config=None):
         # create and configure the app
@@ -21,6 +20,19 @@ class WebServer:
         def hello():
             return render_template('app.html')
 
+
+        @app.route('/api/graph', methods=['GET'])
+        def getGraph():
+            if request.method == 'GET':
+                if self.graph == None:
+                    return jsonify({"Message":"Failed to load previous graph data."}), 200
+                response_JSON = self.graph.beautifyForJSON()
+                response_JSON["Message"] = "Previous graph retrieved"
+                return jsonify(response_JSON), 200
+                
+            else:
+                # Error 405 - Method not allowed
+                return jsonify({"Message":"Method not allowed."}), 405
 
         @app.route('/api/run', methods=['POST'])
         def run():
@@ -37,7 +49,7 @@ class WebServer:
                 print("Auth:", body['Auth'])
                
 
-                graph = Graph()
+                self.graph = Graph()
 
                 auth_dict = body['Auth']
 
@@ -68,7 +80,7 @@ class WebServer:
                     scope = body['Scope'].replace(', ', ',').split(',')
 
 
-                graph.generateGroups(auth_dict.keys())
+                self.graph.generateGroups(auth_dict.keys())
                 
                 for user in auth_dict.keys():
                     if self.cancel == True:
@@ -111,10 +123,10 @@ class WebServer:
                                                                       int(body['ThreadCount']),
                                                                       delay)
                   
-                    graph.addNodes(user,node_dict)
-                    graph.addEdges(edge_list)
+                    self.graph.addNodes(user,node_dict)
+                    self.graph.addEdges(edge_list)
 
-                response_JSON = graph.beautifyForJSON()
+                response_JSON = self.graph.beautifyForJSON()
                 response_JSON["Message"] = "Mapping complete"
                 return jsonify(response_JSON), 200
 

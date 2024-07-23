@@ -1,6 +1,44 @@
 
 
 
+
+
+function init() {
+
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    console.log("Response received.");
+    if (this.readyState == 4 && this.status == 200) {
+      let response_json = JSON.parse(this.responseText);
+      console.log("Success");
+      let server_response_msg = JSON.parse(this.responseText)['Message'];
+      document.getElementById('server_response').innerText = server_response_msg; 
+      if (server_response_msg != "Failed to load previous graph data.")
+      {
+        loadData(response_json['node_list'], response_json['edge_list'])
+      }
+
+      document.getElementById('user_color_table').innerHTML = '';
+      table = document.getElementById('user_color_table');
+      new_row = table.insertRow(-1);
+      new_row.insertCell(0).innerHTML = '<th>Color</th>'
+      new_row.insertCell(1).innerHTML = '<th>Name</th>'
+      let users = response_json["groups"];
+      for (const [key, value] of Object.entries(users))
+      {
+        new_row = table.insertRow(-1);
+        let cell1 = new_row.insertCell(0).innerHTML = '<input id="' + value + '" type=color value="'+ options.groups[value]['color']['background']+'" onchange=\'update_colors(this)\'></span>'
+        let cell2 = new_row.insertCell(1).innerHTML = '<span class="user_group">'+key+'</span>'
+      }
+    }
+  }
+  xhttp.open("get", "/api/graph", true);
+  xhttp.send();
+  //xhttp.setRequestHeader("content-type", "application/json;charset=UTF-8");
+}
+
+
+
 function run() {
   document.getElementById("run_button").innerHTML='Running... <i class="fa fa-spinner fa-spin">';
   document.getElementById("run_button").disabled = true;
@@ -23,19 +61,20 @@ function run() {
       document.getElementById("run_button").disabled = false;
       document.getElementById("cancel_button").disabled = true;
 
-      /*
+      
       table = document.getElementById('user_color_table');
       new_row = table.insertRow(-1);
       new_row.insertCell(0).innerHTML = '<th>Color</th>'
       new_row.insertCell(1).innerHTML = '<th>Name</th>'
-      let users = response_json["Users"];
-      for (let i = 0; i < users.length; i++)
+      let users = response_json["groups"];
+      for (const [key, value] of Object.entries(users))
       {
         new_row = table.insertRow(-1);
-        let cell1 = new_row.insertCell(0).innerHTML = '<input type=color value="'+ users[i][1]+'" onchange=\'update_colors()\'></span>'
-        let cell2 = new_row.insertCell(1).innerHTML = '<span class="user_group">'+ users[i][0]+'</span>'
+
+        let cell1 = new_row.insertCell(0).innerHTML = '<input id="' + value + '" type=color value="'+ options.groups[value]['color']['background']+'" onchange=\'update_colors(this)\'></span>'
+        let cell2 = new_row.insertCell(1).innerHTML = '<span class="user_group">'+key+'</span>'
       }
-      */
+      
        //loadData(response_json['nodes'], response_json['edges'])
 
 
@@ -125,8 +164,12 @@ function search() {
 }
 
 
-function update_colors() 
+function update_colors(element) 
 {
+  console.log("Updating group: " + element.id);
+  options.groups[element.id] = {color: {background: element.value}}
+  network.setOptions(options);
+    /*
     color_data = {}
     table = document.getElementById("user_color_table");
     for (let i = 1; i < table.rows.length; i++)
@@ -156,6 +199,7 @@ function update_colors()
     xhttp.open("post", "/api/update_colors", true);
     xhttp.setRequestHeader("content-type", "application/json;charset=UTF-8");
     xhttp.send(JSON.stringify(color_data));
+    */
 }
 
 

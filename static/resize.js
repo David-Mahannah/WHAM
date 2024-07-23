@@ -31,15 +31,13 @@ function EndDrag() {
 	isLeftDragging = false;
 	isRightDragging = false;
 	
-	document.getElementById("graph_frame").style.visibility = "visible";
+  //document.getElementById("graph_frame").style.visibility = "visible";
 	SetCursor("auto");
 }
 
 function OnDrag(event) {
 	if(isLeftDragging || isRightDragging) {
-		console.log("Dragging");
-		//console.log(event);
-		document.getElementById("graph_frame").style.visibility = "hidden";
+		//document.getElementById("graph_frame").style.visibility = "hidden";
 		let page = document.getElementById("page");
 		let leftcol = document.getElementById("leftcol");
 		let rightcol = document.getElementById("rightcol");

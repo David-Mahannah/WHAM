@@ -7,7 +7,6 @@ import random
 from urllib.parse import urlparse
 from urllib3.connectionpool import connection_from_url
 import time
-import NetworkGraph
 
 class WorkerThread(threading.Thread):
     def __init__(self, headers, queue, lock, edgelist, url, scope, level, verbose, proxy, delay, node_dict, visited):
