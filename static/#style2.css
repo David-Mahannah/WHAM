@@ -1,0 +1,218 @@
+html {
+}
+
+
+body {
+  font-family: "Lucida Console";
+  color: gainsboro;
+  margin: 0px;
+  background-color: #71808D;
+}
+
+li, ul {
+  list-style-type: none;
+  
+  -webkit-user-select: none; /* Safari */        
+-moz-user-select: none; /* Firefox */
+-ms-user-select: none; /* IE10+/Edge */
+user-select: none; /* Standard */
+}
+
+ul {
+  padding: 10px;
+}
+
+
+input[type=text] {
+  width: 97%;
+  margin: 0px auto 0px auto;
+  background-color: rgb(80, 80, 80);
+  color: gainsboro;
+  border: 2px solid #71808D;
+}
+
+textarea {
+  color: gainsboro;
+  width: 97%;
+  margin: 0px auto 0px auto;
+  resize:vertical;
+  padding: 6px 10px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: rgb(80, 80, 80);
+  border: 2px solid #71808D;
+  font-size: 12px;
+
+}
+
+#page {
+  height: 100vh;
+	background-color: pink;
+	display: grid;
+	grid-template-areas:
+		'header header header header header'
+		'leftcol leftdragbar tabs tabs tabs'
+		'leftcol leftdragbar tabpages rightdragbar rightcol'
+		'leftcol leftdragbar footer footer footer';
+	grid-template-rows: min-content 1fr 9fr 1fr;
+	grid-template-columns: 2fr 2px 6fr 2px 2fr;	
+}
+
+/*****************************/
+#header {
+
+  background-color: #f56a00;
+	overflow: auto;
+  padding: 5px;
+	grid-area: header;
+
+  border-bottom: 1px solid #71808D;
+}
+
+#leftcol {
+  background: rgb(47, 47, 47);
+	overflow: auto;
+	grid-area: leftcol;
+  min-width: 360px;
+}
+
+#leftdragbar {
+	grid-area: leftdragbar;
+	cursor: ew-resize;
+  background-color: #71808D;
+}
+
+
+#tabs {
+  background-color: rgb(47, 47, 47);
+
+
+	overflow: auto;
+	grid-area: tabs;
+  border-bottom: 1px solid #71808D;
+}
+
+#tabpages {
+  background-color: rgb(65, 65, 65);
+
+	grid-area: tabpages;
+}
+
+#rightdragbar {
+	background-color: #71808D;
+	grid-area: rightdragbar;
+	cursor: ew-resize;
+}
+
+
+#rightcol {
+  background-color: rgb(47, 47, 47);
+
+	overflow: auto;
+	grid-area: rightcol;
+  padding: 10px;
+}
+
+#footer {
+  background-color: rgb(47, 47, 47);
+  border-top: 1px solid #71808d;
+	grid-area: footer;
+}
+
+.popup {
+  position: absolute;
+  order: 5;
+  background-color: #D2D9DE;
+  right: 45%;
+  top: 45%;
+}#EEF0F2
+
+button {
+  padding: 4px 5px;
+  border: none;
+}
+
+#user_table {
+  border: 1px solid #71808D;
+  padding: 5px;
+}
+
+
+table {
+  width: 100%;
+}
+
+td, th {
+  padding: 3px;
+  margin: 0px;
+}
+
+.role_input {
+  border: none;
+  width: 100%;
+}
+
+
+.delete_role_button {
+  padding: 2px 5px;
+}
+
+#add_user_button {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#add_user_button_container {
+  padding: 0px 4px 0px 4px;
+}
+
+
+
+.dot {
+  height: 15px;
+  width: 15px;
+  background-color: red;
+  border-radius: 50%;
+  display: inline-block;
+  float: left;
+}
+
+
+#color_palette {
+  margin: 0px;
+}
+
+
+.username {
+  margin-left: 5px;
+  height:25px;
+  display: inline-flex;
+  align-items: center;
+}
+
+
+
+details {
+  border: 1px solid #71808D;
+  border-radius: 4px;
+  padding: 5px;
+  background-color: rgb(80, 80, 80);
+
+}
+
+summary {
+  font-size: 16px;
+}
+
+.menu_toggle {
+  float: right;
+}
+
+tr {
+  text-align: center;
+}
+
+#show {
+  height: 99%;
+}
