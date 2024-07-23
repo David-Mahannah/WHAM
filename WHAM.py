@@ -27,5 +27,7 @@ if __name__ == '__main__':
         os.remove("static/map.html")
     crawler_manager = CrawlerManager()
     web_server = WebServer(crawler_manager)
-    web_server.create_app().run(debug=True)
+
+    port = 8000
+    web_server.create_app().run(debug=True, port=port)
 
