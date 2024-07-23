@@ -23,13 +23,41 @@ var options;
 
  */
 
+
+
+function createHTMLTitle(item, groups) {
+  var element = document.createElement("div");
+  var table = document.createElement("table");
+
+  new_row = table.insertRow();
+  new_row.insertCell().appendChild(document.createTextNode('Host:'));
+  new_row.insertCell().appendChild(document.createTextNode(item.host));
+
+
+  new_row = table.insertRow();
+  new_row.insertCell().appendChild(document.createTextNode('Path:'));
+  new_row.insertCell().appendChild(document.createTextNode(item.path));
+
+
+  new_row = table.insertRow();
+  new_row.insertCell().appendChild(document.createTextNode('Users:'));
+  new_row.insertCell().appendChild(document.createTextNode(groups[item['group']]));
+
+
+  element.appendChild(table);
+  return element;
+}
+
 /*
  * Call once per run. This will refresh and generate the entire graph.
  */
-function loadData(nodes, edges) {
+function loadData(nodes, edges, groups) {
   
   // Add to network
   console.log(nodes)
+  for (item of nodes) {
+    item.title = createHTMLTitle(item, Object.fromEntries(Object.entries(groups).map(([key, value]) => [value, key])));
+  }
   let vis_nodes = new vis.DataSet(nodes);
   console.log(edges)
   // create an array with edges
@@ -44,13 +72,13 @@ function loadData(nodes, edges) {
 
   options = {
     groups: {
-      '0': {color: {background: '#f56a00', border: 'white'}},
-      '1': {color: {background: '#255C99'}},
-      '2': {color: {background: '#7FB285'}},
-      '3': {color: {background: '#AF1B3F'}},
-      '4': {color: {background: '#4D243D'}},
-      '5': {color: {background: '#FCC521'}},
-      '6': {color: {background: '#E2FFD6'}},
+      '0': {color: {background: '#f56a00', border: '#71808D'}},
+      '1': {color: {background: '#255C99', border: '#71808D'}},
+      '2': {color: {background: '#7FB285', border: '#71808D'}},
+      '3': {color: {background: '#AF1B3F', border: '#71808D'}},
+      '4': {color: {background: '#4D243D', border: '#71808D'}},
+      '5': {color: {background: '#FCC521', border: '#71808D'}},
+      '6': {color: {background: '#E2FFD6', border: '#71808D'}},
     },
     nodes: {
       shape: 'box',
@@ -62,7 +90,8 @@ function loadData(nodes, edges) {
       smooth: { type: "discrete" },
       arrows: {
         to: {enabled: true, scaleFactor: 1, type: "arrow"}
-      }
+      },
+      color: {highlight: "white"}
     },
     layout: { improvedLayout: true },
     physics: {

@@ -75,7 +75,9 @@ class Graph:
                                    "path":path,
                                    "label":path,
                                    "user_group":group,
-                                   "group":str(self._groups[tuple(group)])})
+                                   "group":str(self._groups[tuple(group)]),
+                                 })
+
             
         
         JSON_edge_list = []
