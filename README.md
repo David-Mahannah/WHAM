@@ -3,7 +3,7 @@
 
 ### Description
 
-A web application visualizer built using Flask, PyVis and urllib3.
+A web application visualizer built using Flask, Vis.js and urllib3.
 
 ### Setup
 Install the required python libraries
