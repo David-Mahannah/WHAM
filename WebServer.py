@@ -13,7 +13,7 @@ class WebServer:
     def __init__(self, crawler_manager):
         self.crawler_manager = crawler_manager
         self.graph = None
-        self.state = State()
+        self.state = None
 
     def create_app(self, test_config=None):
         # create and configure the app
@@ -22,6 +22,23 @@ class WebServer:
         @app.route('/')
         def hello():
             return render_template('app.html')
+
+
+        @app.route('/api/state', methods=['POST', 'GET'])
+        def applicationState():
+            # Retrieve the application state
+            if request.method == 'GET':
+                return jsonify(self.state), 200
+
+            # Update the application state
+            elif request.method == 'POST':
+                self.state = request.get_json()
+                return jsonify({"Message":"State successfully updated."}), 200
+            else:
+                # Error 405 - Method not allowed
+                return jsonify({"Message":"Method not allowed."}), 405
+
+
 
 
         @app.route('/api/graph', methods=['GET'])
@@ -42,22 +59,19 @@ class WebServer:
             if request.method == 'POST':
                 self.cancel = False
 
-                body = request.get_json(); 
+                #body = request.get_json(); 
 
-
-                
-
-                if body["Target"]['URL']["value"] == '':
+                if self.state["Target"]['URL']["value"] == '':
                     return jsonify({"Message":"Target URL not provided"}), 200
-                if body["Target"]["Request"]["value"] == '':
+                if self.state["Target"]["Request"]["value"] == '':
                     return jsonify({"Message":"Target Request not provided"}), 200
 
-                print("Auth:", body['Auth'])
+                print("Auth:", self.state["User_Roles"]["Roles"])
                
 
                 self.graph = Graph()
 
-                auth_dict = body["User_Roles"]["Roles"]
+                auth_dict = self.state["User_Roles"]["Roles"]
 
                 all_edge_lists = []
                 all_pairs = []
@@ -65,8 +79,8 @@ class WebServer:
                 num_users = len(auth_dict.keys())
 
                 temp_headers = {}
-                if body["Request"] != 'Disabled':
-                    req = body["Target"]["Request"]["value"]
+                if self.state["Target"]["Request"]["Enabled"] == False:
+                    req = self.state["Target"]["Request"]["value"]
                     print(req)
                     parts = req.split("\n")
                     url = re.findall("GET\s(\S*)\sHTTP", parts[0])[0]
@@ -78,12 +92,12 @@ class WebServer:
                     print(url)
                     print(temp_headers)
                 else:
-                    url = body["URL"]
+                    url = self.state["Target"]["URL"]["value"]
 
-                if body["Scope"]["Enabled"] == False:
+                if self.state["Scope"]["Enabled"] == False:
                     scope = [urllib3.util.parse_url(url).host]
                 else:
-                    scope = body["Scope"]["Domain"].replace(', ', ',').split(',')
+                    scope = self.state["Scope"]["Domain"].replace(', ', ',').split(',')
 
 
                 self.graph.generateGroups(auth_dict.keys())
@@ -100,12 +114,12 @@ class WebServer:
                     headers[auth_header[0]] = auth_header[1]
                     
                     proxy = None
-                    if body["Proxy"]["Host"] != '' and body["Proxy"]["Enabled"] == True:
-                        proxy = body["Proxy"]["Host"] + ':' + body["Proxy"]["Port"]
+                    if self.state["Proxy"]["Host"] != '' and self.state["Proxy"]["Enabled"] == True:
+                        proxy = self.state["Proxy"]["Host"] + ':' + self.state["Proxy"]["Port"]
 
                     delay = 0
-                    if body["Behavior"]["Delay"]["Enabled"] == True:
-                        delay = body["Behavior"]["Delay"]["MS"]
+                    if self.state["Behavior"]["Delay"]["Enabled"] == True:
+                        delay = self.state["Behavior"]["Delay"]["MS"]
 
                     print("SCOPE")
                     print(scope)
@@ -123,10 +137,10 @@ class WebServer:
                     edge_list, node_dict = self.crawler_manager.start(url,
                                                                       headers,
                                                                       scope,
-                                                                      int(body['Behavior']['Depth']), 
+                                                                      int(self.state['Behavior']['Depth']), 
                                                                       True, 
                                                                       proxy, 
-                                                                      int(body['Behavior']['ThreadCount']),
+                                                                      int(self.state['Behavior']['ThreadCount']),
                                                                       delay)
                   
                     self.graph.addNodes(user,node_dict)

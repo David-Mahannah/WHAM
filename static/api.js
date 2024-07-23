@@ -9,11 +9,14 @@ function populateGroupColorTable(users) {
     new_row.insertCell(0).innerHTML = '<th>Color</th>'
     new_row.insertCell(1).innerHTML = '<th>Name</th>'
 
+
+    if (users != undefined) {
     for (const [key, value] of Object.entries(users))
     {
       new_row = table.insertRow(-1);
       let cell1 = new_row.insertCell(0).innerHTML = '<input id="' + value + '" type=color value="'+ options.groups[value]['color']['background']+'" onchange=\'update_colors(this)\'></span>'
       let cell2 = new_row.insertCell(1).innerHTML = '<span class="user_group">'+key+'</span>'
+    }
     }
 }
 
@@ -49,7 +52,128 @@ function gebid(id) {
   return document.getElementById(id);
 }
 
+
+function updateApplicationState() {
+  auth_data = {}
+  table = document.getElementById("auth_table");
+  for (let i = 1; i < table.rows.length; i++) {
+    let row = table.rows[i];
+    let user = row.cells[0].getElementsByTagName('input')[0].value;
+    if (user != '') {
+      auth_data[user] = row.cells[1].getElementsByTagName('input')[0].value;
+    }
+  }
+  
+  var application_state = {
+    "Target": {
+      "URL": {"Enabled": gebid('URL_Radio').checked, "value": gebid('URL').value},
+      "Request": { "Enabled": gebid('Request_Radio'), "value": gebid('Request')},
+    },
+    "User_Roles": {
+      "Roles": (gebid('custom_user_roles_checkbox').checked ? auth_data : {"default_header":"WHAM:WHAM"})
+    },
+    "Scope": {
+      "Enabled":gebid('scope_toggle').checked,
+      "Domain":gebid('Scope').value
+    },
+    "Proxy": {
+      "Enabled":gebid('ProxyCheckBox').checked,
+      "Host":gebid('ProxyHost').value,
+      "Port":gebid('ProxyPort').value,
+      "Certificate":"NA"
+    },
+    "Behavior": {
+      "Delay": {
+        "Enabled": gebid('DelayCheckBox').checked, 
+        "MS": gebid('DelayMS').value
+      },
+      "Depth": gebid('Depth').value,
+      "ThreadCount": gebid('ThreadCount').value
+    }
+  }
+
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+
+    }
+  } 
+  xhttp.open("post", "/api/state", true);
+  xhttp.setRequestHeader("content-type", "application/json; charset=UTF-8");
+  xhttp.send(JSON.stringify(application_state));
+}
+
+function loadApplicationState() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      let response_json = JSON.parse(this.responseText);
+
+
+
+      /* TODO Update DOM using the below items */
+
+      // Target
+      response_json["Target"]["URL"]
+      response_json["Target"]["Request"]
+
+      // User Roles
+      response_json["User_Roles"]["Roles"]
+
+      // Scope
+      response_json["Scope"]["Enabled"]
+      response_json["Scope"]["Domain"]
+
+      // Proxy
+      response_json["Proxy"]["Enabled"]
+      response_json["Proxy"]["Host"]
+      response_json["Proxy"]["Port"]
+      response_json["Proxy"]["Certficate"]
+
+
+      // Behavior
+      response_json["Behavior"]["Delay"]["Enabled"]
+      response_json["Behavior"]["Delay"]["MS"]
+      response_json["Behavior"]["Depth"]
+      response_json["Behavior"]["ThreadCount"]
+      
+      /*
+      var application_state = {
+        "Target": {
+          "URL": {"Enabled": gebid('URL_Radio').checked, "value": gebid('URL').value},
+          "Request": { "Enabled": gebid('Request_Radio'), "value": gebid('Request')},
+        },
+        "User_Roles": {
+          "Roles": (gebid('custom_user_roles_checkbox').checked ? auth_data : {"default_header":"WHAM:WHAM"})
+        },
+        "Scope": {
+          "Enabled":gebid('scope_toggle').checked,
+          "Domain":gebid('Scope').value
+        },
+        "Proxy": {
+          "Enabled":gebid('ProxyCheckBox').checked,
+          "Host":gebid('ProxyHost').value,
+          "Port":gebid('ProxyPort').value,
+          "Certificate":"NA"
+        },
+        "Behavior": {
+          "Delay": {
+            "Enabled": gebid('DelayCheckBox').checked, 
+            "MS": gebid('DelayMS').value
+          },
+          "Depth": gebid('Depth').value,
+          "ThreadCount": gebid('ThreadCount').value
+        }
+      }
+      */
+    }
+  }
+}
+
+
 function run() {
+  updateApplicationState()
+
   document.getElementById("run_button").innerHTML='Running... <i class="fa fa-spinner fa-spin">';
   document.getElementById("run_button").disabled = true;
   document.getElementById("cancel_button").disabled = false;
@@ -74,65 +198,7 @@ function run() {
   };
 
   xhttp.open("post", "/api/run", true);
-  xhttp.setRequestHeader("content-type", "application/json;charset=UTF-8");
-  
-  auth_data = {}
-  table = document.getElementById("auth_table");
-  for (let i = 1; i < table.rows.length; i++)
-  {
-    let row = table.rows[i];
-    let user = row.cells[0].getElementsByTagName('input')[0].value;
-    if (user != '')
-    {
-      auth_data[user] = row.cells[1].getElementsByTagName('input')[0].value;
-    }
-  }
-  
-  /*
-  var formData = 
-    {"URL":       ((document.getElementById('URL_Radio').checked) ? document.getElementById('URL').value : 'Disabled'),
-     "Request":   ((document.getElementById('Request_Radio').checked) ? document.getElementById('Request').value : 'Disabled'),
-     "ProxyHost": ((document.getElementById('ProxyCheckBox').checked) ? document.getElementById('ProxyHost').value : "Disabled"),
-     "ProxyPort": ((document.getElementById('ProxyCheckBox').checked) ? document.getElementById('ProxyPort').value : "Disabled"),
-     "DelayMS":   ((document.getElementById('DelayCheckBox').checked) ? document.getElementById('DelayMS').value : 'Disabled'),
-     "Depth":       document.getElementById('Depth').value,
-     "Scope":     ((document.getElementById('scope_toggle').checked) ? document.getElementById('Scope').value : "Disabled"),
-     "Cert":      ((document.getElementById('ProxyCheckBox').checked) ? document.getElementById('Cert').value : 'Disabled'),
-     "ThreadCount": document.getElementById('ThreadCount').value,
-     "Auth":      ((document.getElementById('custom_user_roles_checkbox').checked) ? auth_data : {"default_header":"WHAM:WHAM"})
-  }
-  */
-
-  var applicate_state = {
-    "Target": {
-      "URL": {"Enabled": gebid('URL_Radio').checked, "value": gebid('URL').value},
-      "Request": { "Enabled": gebid('Request_Radio'), "value": gebid('Request')},
-    },
-    "User_Roles": {
-      "Roles": (gebid('custom_user_roles_checkbox').checked ? auth_data : "default_header":"WHAM:WHAM"})
-    },
-    "Scope": {
-      "Enabled":gebid('scope_toggle').checked,
-      "Domain":gebid('Scope').value
-    },
-    "Proxy": {
-      "Enabled":gebid('ProxyCheckBox').checked,
-      "Host":gebid('ProxyHost').value,
-      "Port":gebid('ProxyPort').value,
-      "Certificate":"NA"
-    },
-    "Behavior": {
-      "Delay": {
-        "Enabled": gebid('DelayCheckBox').checked, 
-        "MS": gebid('DelayMS').value
-      }
-      "Depth": gebid('Depth').value,
-      "ThreadCount": gebid('ThreadCount')
-    }
-  }
-  
-  xhttp.send(JSON.stringify(application_state));
-  //xhttp.send(JSON.stringify(formData));
+  xhttp.send();
 }
 
 function cancel() {
