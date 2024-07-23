@@ -29,9 +29,13 @@
 			<div id="leftcol">
         <ul>
           <li><span style="font-size: 30px;">Settings</span></li>
-          <hr>
-          <!-- Button to switch to dark mode CSS -->
-          <button onclick="toggleTheme()">Switch</button> 
+          <!-- slider to switch to dark mode CSS -->
+          <span class="switch-title">Switch Theme</span>
+          <label class="switch">
+            <input type="checkbox" onclick="toggleTheme()">
+            <span class="slider round"></span>
+          </label>
+          <hr> 
           <details>
           <summary><span>Target</span></summary>
           <hr>
@@ -181,5 +185,3 @@
     <script>init();</script>
 </body>
 </html>
-
-
