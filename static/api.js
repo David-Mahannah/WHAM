@@ -1,5 +1,17 @@
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
+document.addEventListener("click", async function(evnt){
+  await sleep(500);
+  updateApplicationState();
+});
+
+document.addEventListener("keyup", async function(evnt){
+  await sleep(500);
+  updateApplicationState();
+});
 
 function populateGroupColorTable(users) {
     document.getElementById('user_color_table').innerHTML = '';
@@ -44,6 +56,10 @@ function init() {
   }
   xhttp.open("get", "/api/graph", true);
   xhttp.send();
+
+
+  loadApplicationState();
+
 }
 
 
@@ -66,29 +82,38 @@ function updateApplicationState() {
   
   var application_state = {
     "Target": {
+      "Collapsed": !(gebid('Target_Details').open),
       "URL": {"Enabled": gebid('URL_Radio').checked, "value": gebid('URL').value},
-      "Request": { "Enabled": gebid('Request_Radio'), "value": gebid('Request')},
+      "Request": { "Enabled": gebid('Request_Radio').checked, "value": gebid('Request').value},
     },
     "User_Roles": {
-      "Roles": (gebid('custom_user_roles_checkbox').checked ? auth_data : {"default_header":"WHAM:WHAM"})
+      "Collapsed": !(gebid('User_Roles_Details').open),
+      "Enabled": gebid('custom_user_roles_checkbox').checked,
+      "Roles": auth_data
     },
     "Scope": {
+      "Collapsed": !(gebid('Scope_Details').open),
       "Enabled":gebid('scope_toggle').checked,
       "Domain":gebid('Scope').value
     },
     "Proxy": {
+      "Collapsed": !(gebid('Proxy_Details').open),
       "Enabled":gebid('ProxyCheckBox').checked,
       "Host":gebid('ProxyHost').value,
       "Port":gebid('ProxyPort').value,
       "Certificate":"NA"
     },
     "Behavior": {
+      "Collapsed": !(gebid('Behavior_Details').open),
       "Delay": {
         "Enabled": gebid('DelayCheckBox').checked, 
         "MS": gebid('DelayMS').value
       },
       "Depth": gebid('Depth').value,
       "ThreadCount": gebid('ThreadCount').value
+    },
+    "Users": {
+      "Collapsed": !(gebid('Users_Details').open)
     }
   }
 
@@ -109,34 +134,66 @@ function loadApplicationState() {
     if (this.readyState == 4 && this.status == 200) {
       let response_json = JSON.parse(this.responseText);
 
-
-
       /* TODO Update DOM using the below items */
 
       // Target
-      response_json["Target"]["URL"]
-      response_json["Target"]["Request"]
+      gebid('Target_Details').open = !(response_json['Target']['Collapsed']);
+      gebid('URL_Radio').checked = response_json["Target"]["URL"]["Enabled"]
+      gebid('URL').value = response_json["Target"]["URL"]["value"]
+      gebid('Request_Radio').checked = response_json["Target"]["Request"]["Enabled"]
+      gebid('Request').value = response_json["Target"]["Request"]["value"]
 
       // User Roles
-      response_json["User_Roles"]["Roles"]
+      gebid('User_Roles_Details').open = !(response_json['User_Roles']['Collapsed']);
+      gebid('custom_user_roles_checkbox').checked = response_json["User_Roles"]["Enabled"];
+      let roles = response_json["User_Roles"]["Roles"];
+
+
+      if (Object.keys(roles).length !== 0) {
+        table = document.getElementById('auth_table');
+        table.innerHTML = '<tbody><tr><th>User</th><th>Session Header</th></tr></tbody>';
+
+        let first = true;
+        for (let [key, value] of Object.entries(roles)) {
+          if (key == 'default_header' && value == 'WHAM:WHAM')
+          {
+            key = '';
+            value = '';
+          }
+          let new_row = table.insertRow(-1);
+          let cell1 = new_row.insertCell(0).innerHTML = '<input type="text" class="role_input" value="'+key+'">'
+          let cell2 = new_row.insertCell(1).innerHTML = '<input type="text" class="role_input" value="'+value+'">'
+          if (!first) {
+          let cell3 = new_row.insertCell(2).innerHTML = '<button class="delete_role_button" tabindex="-1" onclick="deleteme(this)">X</button>'
+          }
+          first = false;
+        }
+        custom_user_roles_toggle();
+      }
 
       // Scope
-      response_json["Scope"]["Enabled"]
-      response_json["Scope"]["Domain"]
+      gebid('Scope_Details').open = !(response_json['Scope']['Collapsed']);
+      gebid('scope_toggle').checked = response_json["Scope"]["Enabled"]
+      gebid('Scope').value = response_json["Scope"]["Domain"]
 
       // Proxy
-      response_json["Proxy"]["Enabled"]
-      response_json["Proxy"]["Host"]
-      response_json["Proxy"]["Port"]
-      response_json["Proxy"]["Certficate"]
+      gebid('Proxy_Details').open = !(response_json['Proxy']['Collapsed']);
+      gebid('ProxyCheckBox').checked = response_json["Proxy"]["Enabled"]
+      gebid('ProxyHost').value = response_json["Proxy"]["Host"]
+      gebid('ProxyPort').value = response_json["Proxy"]["Port"]
+      // response_json["Proxy"]["Certficate"]
 
 
       // Behavior
-      response_json["Behavior"]["Delay"]["Enabled"]
-      response_json["Behavior"]["Delay"]["MS"]
-      response_json["Behavior"]["Depth"]
-      response_json["Behavior"]["ThreadCount"]
-      
+      gebid('Behavior_Details').open = !(response_json['Behavior']['Collapsed']);
+      gebid('DelayCheckBox').checked = response_json["Behavior"]["Delay"]["Enabled"]
+      gebid('DelayMS').value = response_json["Behavior"]["Delay"]["MS"]
+      gebid('Depth').value = response_json["Behavior"]["Depth"]
+      gebid('ThreadCount').value = response_json["Behavior"]["ThreadCount"]
+     
+
+      // Users
+      gebid('Users_Details').open = !(response_json['Users']['Collapsed']);
       /*
       var application_state = {
         "Target": {
@@ -168,6 +225,8 @@ function loadApplicationState() {
       */
     }
   }
+  xhttp.open("get", "/api/state", true);
+  xhttp.send(JSON.stringify());
 }
 
 

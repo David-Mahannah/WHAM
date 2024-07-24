@@ -61,10 +61,11 @@ class WebServer:
 
                 #body = request.get_json(); 
 
-                if self.state["Target"]['URL']["value"] == '':
+                if self.state["Target"]["URL"]["Enabled"]==True and self.state["Target"]['URL']["value"] == '':
                     return jsonify({"Message":"Target URL not provided"}), 200
-                if self.state["Target"]["Request"]["value"] == '':
+                elif self.state["Target"]["Request"]["Enabled"]==True and self.state["Target"]["Request"]["value"] == '':
                     return jsonify({"Message":"Target Request not provided"}), 200
+
 
                 print("Auth:", self.state["User_Roles"]["Roles"])
                
@@ -72,6 +73,11 @@ class WebServer:
                 self.graph = Graph()
 
                 auth_dict = self.state["User_Roles"]["Roles"]
+                print(auth_dict)
+                if (len(auth_dict.keys()) == 0):
+                    auth_dict["default_header"] = "WHAM:WHAM"
+                
+                print(auth_dict)
 
                 all_edge_lists = []
                 all_pairs = []
@@ -79,7 +85,7 @@ class WebServer:
                 num_users = len(auth_dict.keys())
 
                 temp_headers = {}
-                if self.state["Target"]["Request"]["Enabled"] == False:
+                if self.state["Target"]["Request"]["Enabled"] == True:
                     req = self.state["Target"]["Request"]["value"]
                     print(req)
                     parts = req.split("\n")
