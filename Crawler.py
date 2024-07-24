@@ -7,6 +7,7 @@ import random
 from urllib.parse import urlparse
 from urllib3.connectionpool import connection_from_url
 import time
+from WebServer import inScope
 
 class WorkerThread(threading.Thread):
     def __init__(self, headers, queue, lock, edgelist, url, scope, level, verbose, proxy, delay, node_dict, visited):
@@ -74,7 +75,7 @@ class WorkerThread(threading.Thread):
             time.sleep(delay)
             
             # URL not in scope
-            if not any(x in next_url for x in scope):
+            if not inScope(scope, next_url):
                 print('[Thread #%s]: ' % (self.ident) + next_url + " is out of scope")
                 continue
             
@@ -168,7 +169,7 @@ class WorkerThread(threading.Thread):
             with self.lock:
             # Add children to queue
                 for link in sublinks:
-                    if any(x in link for x in scope):
+                    if inScope(scope, link):
                         self.queue.append((next_url, link, level+1))
                 visited.append(to_add_next_url)
                     #else:
@@ -194,7 +195,7 @@ class CrawlerManager():
         prev_url, next_url, level = queue.popleft()
 
         # URL not in scope
-        if not any(x in next_url for x in scope):
+        if not inScope(scope, next_url):
             verbosePrint(next_url + " is out of scope", verbose)
             return edge_list
         
@@ -258,7 +259,7 @@ class CrawlerManager():
 
         # Add children to queue
         for link in sublinks:
-            if any(x in link for x in scope):
+            if inScope(scope, link):
                 #verbosePrint(next_url + " is out of scope", verbose)
                 #return edge_list
                 queue.append((next_url, link, level+1))
