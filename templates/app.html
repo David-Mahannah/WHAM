@@ -1,8 +1,24 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">           
+    <link id="theme" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <script>
+      function toggleTheme() {
+        // Select the <link> element with id 'theme'
+        var theme = document.getElementById('theme');
+    
+        // Check the current href value to determine the new theme
+        if (theme.getAttribute('href') == "{{ url_for('static', filename='style.css') }}") {
+          // Change to style2.css when switching to dark mode
+          theme.setAttribute('href', "{{ url_for('static', filename='style2.css') }}");
+        } else {
+          // Change back to style.css when switching to gray mode
+          theme.setAttribute('href', "{{ url_for('static', filename='style.css') }}");
+        }
+      }
+    </script>
   </head>
 
 <body onresize="ResetColumnSizes()">
@@ -13,8 +29,13 @@
 			<div id="leftcol">
         <ul>
           <li><span style="font-size: 30px;">Settings</span></li>
-          <hr>
-
+          <!-- slider to switch to dark mode CSS -->
+          <span class="switch-title">Switch Theme</span>
+          <label class="switch">
+            <input type="checkbox" onclick="toggleTheme()">
+            <span class="slider round"></span>
+          </label>
+          <hr> 
           <details>
           <summary><span>Target</span></summary>
           <hr>
@@ -164,5 +185,3 @@
     <script>init();</script>
 </body>
 </html>
-
-
