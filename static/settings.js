@@ -42,35 +42,34 @@ function delay_toggle() {
 
 
 function custom_user_roles_toggle() {
-  if (event.target && event.target.matches("input[type='checkbox']")) {
-    if (event.target.checked) {
-      let inputs = document.getElementsByClassName("role_input")
-      for (let i = 0; i < inputs.length; i++)
-      {
-        inputs[i].disabled = false;
-      }
-
-
-      inputs = document.getElementsByClassName("delete_role_button")
-      for (let i = 0; i < inputs.length; i++)
-      {
-        inputs[i].disabled = false;
-      }
-      document.getElementById("add_user_button").disabled = false;
-
-    } else {
-      let inputs = document.getElementsByClassName("role_input")
-      for (let i = 0; i < inputs.length; i++)
-      {
-        inputs[i].disabled = true;
-      }
-      inputs = document.getElementsByClassName("delete_role_button")
-      for (let i = 0; i < inputs.length; i++)
-      {
-        inputs[i].disabled = true;
-      }
-      document.getElementById("add_user_button").disabled = true;
+  let checkbox = document.getElementById('custom_user_roles_checkbox');
+  if (checkbox.checked) {
+    let inputs = document.getElementsByClassName("role_input")
+    for (let i = 0; i < inputs.length; i++)
+    {
+      inputs[i].disabled = false;
     }
+
+
+    inputs = document.getElementsByClassName("delete_role_button")
+    for (let i = 0; i < inputs.length; i++)
+    {
+      inputs[i].disabled = false;
+    }
+    document.getElementById("add_user_button").disabled = false;
+
+  } else {
+    let inputs = document.getElementsByClassName("role_input")
+    for (let i = 0; i < inputs.length; i++)
+    {
+      inputs[i].disabled = true;
+    }
+    inputs = document.getElementsByClassName("delete_role_button")
+    for (let i = 0; i < inputs.length; i++)
+    {
+      inputs[i].disabled = true;
+    }
+    document.getElementById("add_user_button").disabled = true;
   }
 }
 
