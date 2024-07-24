@@ -9,6 +9,18 @@ import re
 from ApplicationState import State
 
 
+def inScope(scopes, url):
+    for scope in scopes:
+        if scope['out_of_scope']:
+            if scope['host'] in url:
+                return False;
+    for scope in scopes:
+        if scope['in_scope']:
+            if scope['host'] in url:
+                return True;
+    return False;
+        
+
 class WebServer:
     def __init__(self, crawler_manager):
         self.crawler_manager = crawler_manager
@@ -59,17 +71,14 @@ class WebServer:
             if request.method == 'POST':
                 self.cancel = False
 
-                #body = request.get_json(); 
-
                 if self.state["Target"]["URL"]["Enabled"]==True and self.state["Target"]['URL']["value"] == '':
                     return jsonify({"Message":"Target URL not provided"}), 200
                 elif self.state["Target"]["Request"]["Enabled"]==True and self.state["Target"]["Request"]["value"] == '':
                     return jsonify({"Message":"Target Request not provided"}), 200
 
-
                 print("Auth:", self.state["User_Roles"]["Roles"])
                
-
+                print("SCOPE: ", self.state["Scope"]);
 
                 auth_dict = self.state["User_Roles"]["Roles"]
                 print(auth_dict)
@@ -103,7 +112,7 @@ class WebServer:
                 if self.state["Scope"]["Enabled"] == False:
                     scope = [urllib3.util.parse_url(url).host]
                 else:
-                    scope = self.state["Scope"]["Domain"].replace(', ', ',').split(',')
+                    scope = self.state["Scope"]["Domain"]
 
                 delay = 0
                 if self.state["Behavior"]["Delay"]["Enabled"] == True:
@@ -158,7 +167,7 @@ class WebServer:
                     print("SCOPE")
                     print(scope)
 
-                    if not any(x in url for x in scope):
+                    if not inScope(scope, url):
                         return jsonify({"Message":"Target URL is our of scope."}), 200
 
 

@@ -79,7 +79,18 @@ function updateApplicationState() {
       auth_data[user] = row.cells[1].getElementsByTagName('input')[0].value;
     }
   }
-  
+ 
+  let scope_data = [];
+  table = document.getElementById("scope_table");
+  for (let i = 1; i < table.rows.length; i++) {
+    let row = table.rows[i];
+    let in_scope =     row.cells[0].getElementsByTagName('input')[0].checked;
+    let out_of_scope = row.cells[1].getElementsByTagName('input')[0].checked;
+    let host =         row.cells[2].getElementsByTagName('input')[0].value;
+    scope_data.push({"in_scope":in_scope,"out_of_scope":out_of_scope,"host":host})
+  }
+
+
   var application_state = {
     "Target": {
       "Collapsed": !(gebid('Target_Details').open),
@@ -94,7 +105,7 @@ function updateApplicationState() {
     "Scope": {
       "Collapsed": !(gebid('Scope_Details').open),
       "Enabled":gebid('scope_toggle').checked,
-      "Domain":gebid('Scope').value
+      "Domain":scope_data
     },
     "Proxy": {
       "Collapsed": !(gebid('Proxy_Details').open),
@@ -133,8 +144,6 @@ function loadApplicationState() {
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       let response_json = JSON.parse(this.responseText);
-
-      /* TODO Update DOM using the below items */
 
       if (response_json == null)
       {
@@ -179,7 +188,23 @@ function loadApplicationState() {
       // Scope
       gebid('Scope_Details').open = !(response_json['Scope']['Collapsed']);
       gebid('scope_toggle').checked = response_json["Scope"]["Enabled"]
-      gebid('Scope').value = response_json["Scope"]["Domain"]
+      let scopes = response_json["Scope"]["Domain"];
+      if (scopes.length !== 0) {
+        table = document.getElementById('scope_table');
+        table.innerHTML = '<tbody><tr><th>In</th><th>Out</th><th>Host</th></tr></tbody>';
+        let first = true;
+        for (scope of scopes) {
+          let new_row = table.insertRow(-1);
+          let cell1 = new_row.insertCell(0).innerHTML = '<input type="radio" name="scope_radio_'+new_row.rowIndex+'" '+ (scope['in_scope'] ? "checked" : "")+'>';
+
+
+
+          let cell2 = new_row.insertCell(1).innerHTML = '<input type="radio" name="scope_radio_'+new_row.rowIndex+'" '+(scope['out_of_scope'] ? "checked" : "")+'>';
+          scope['out_of_scope']
+          let cell3 = new_row.insertCell(2).innerHTML = '<input type="text" value="'+scope['host']+'">';
+          let cell4 = new_row.insertCell(3).innerHTML = '<button class="delete_role_button" tabindex="-1" onclick="deleteme(this)">X</button>'
+        }
+      }
 
       // Proxy
       gebid('Proxy_Details').open = !(response_json['Proxy']['Collapsed']);
