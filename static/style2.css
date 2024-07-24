@@ -195,3 +195,7 @@ tr {
 #show {
   height: 99%;
 }
+
+#show.fullscreen{
+  background-color: #f5f5f5;
+}
