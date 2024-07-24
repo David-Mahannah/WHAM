@@ -51,7 +51,7 @@ function init() {
 
       populateGroupColorTable(response_json["groups"])
     } else if (this.readyState == 4) {
-      document.getElementById('server_response').innerText = 'Error ' + this.status;
+      console.log('Failed to load previous network graph:  ' + this.status);
     }
   }
   xhttp.open("get", "/api/graph", true);
@@ -136,6 +136,11 @@ function loadApplicationState() {
 
       /* TODO Update DOM using the below items */
 
+      if (response_json == null)
+      {
+        return
+      }
+      
       // Target
       gebid('Target_Details').open = !(response_json['Target']['Collapsed']);
       gebid('URL_Radio').checked = response_json["Target"]["URL"]["Enabled"]
@@ -194,35 +199,6 @@ function loadApplicationState() {
 
       // Users
       gebid('Users_Details').open = !(response_json['Users']['Collapsed']);
-      /*
-      var application_state = {
-        "Target": {
-          "URL": {"Enabled": gebid('URL_Radio').checked, "value": gebid('URL').value},
-          "Request": { "Enabled": gebid('Request_Radio'), "value": gebid('Request')},
-        },
-        "User_Roles": {
-          "Roles": (gebid('custom_user_roles_checkbox').checked ? auth_data : {"default_header":"WHAM:WHAM"})
-        },
-        "Scope": {
-          "Enabled":gebid('scope_toggle').checked,
-          "Domain":gebid('Scope').value
-        },
-        "Proxy": {
-          "Enabled":gebid('ProxyCheckBox').checked,
-          "Host":gebid('ProxyHost').value,
-          "Port":gebid('ProxyPort').value,
-          "Certificate":"NA"
-        },
-        "Behavior": {
-          "Delay": {
-            "Enabled": gebid('DelayCheckBox').checked, 
-            "MS": gebid('DelayMS').value
-          },
-          "Depth": gebid('Depth').value,
-          "ThreadCount": gebid('ThreadCount').value
-        }
-      }
-      */
     }
   }
   xhttp.open("get", "/api/state", true);
@@ -231,6 +207,7 @@ function loadApplicationState() {
 
 
 function run() {
+  document.getElementById('server_response').innerText = '';
   updateApplicationState()
 
   document.getElementById("run_button").innerHTML='Running... <i class="fa fa-spinner fa-spin">';
@@ -243,13 +220,16 @@ function run() {
     if (this.readyState == 4 && this.status == 200) {
       let response_json = JSON.parse(this.responseText);
       document.getElementById('server_response').innerText = JSON.parse(this.responseText)['Message']; 
-      loadData(response_json['node_list'], response_json['edge_list'], response_json['groups'])
       document.getElementById("run_button").innerHTML='Run';
       document.getElementById("run_button").disabled = false;
       document.getElementById("cancel_button").disabled = true;
+      if (response_json['node_list'] != null && response_json['edge_list'] != null)
+      {
+        loadData(response_json['node_list'], response_json['edge_list'], response_json['groups'])
+      }
       populateGroupColorTable(response_json["groups"])
     } else if (this.readyState == 4) {
-      document.getElementById('server_response').innerText = 'Error ' + this.status;
+      document.getElementById('server_response').innerText = 'Error: ' + JSON.parse(this.responseText)['Message'];
       document.getElementById("run_button").innerHTML='Run';
       document.getElementById("run_button").disabled = false;
       document.getElementById("cancel_button").disabled = true;
@@ -266,7 +246,6 @@ function cancel() {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.status == 200) {
-      document.getElementById('graph_frame').contentWindow.location.reload();
       console.log("Cancel response received");
       document.getElementById("cancel_button").innerHTML='Cancel';
       document.getElementById("cancel_button").disabled = false
