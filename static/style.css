@@ -216,3 +216,7 @@ tr {
 #show {
   height: 99%;
 }
+
+#show.fullscreen{
+  background-color: rgb(47, 47, 47);
+}
