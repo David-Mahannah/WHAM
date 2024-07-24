@@ -45,7 +45,7 @@ class WebServer:
         def getGraph():
             if request.method == 'GET':
                 if self.graph == None:
-                    return jsonify({"Message":"Failed to load previous graph data."}), 200
+                    return jsonify({"Message":"Failed to load previous graph data."}), 500
                 response_JSON = self.graph.beautifyForJSON()
                 response_JSON["Message"] = "Previous graph retrieved"
                 return jsonify(response_JSON), 200
@@ -70,11 +70,11 @@ class WebServer:
                 print("Auth:", self.state["User_Roles"]["Roles"])
                
 
-                self.graph = Graph()
 
                 auth_dict = self.state["User_Roles"]["Roles"]
                 print(auth_dict)
-                if (len(auth_dict.keys()) == 0):
+                if (len(auth_dict.keys()) == 0 or not self.state["User_Roles"]["Enabled"]):
+                    auth_dict = {}
                     auth_dict["default_header"] = "WHAM:WHAM"
                 
                 print(auth_dict)
@@ -105,7 +105,35 @@ class WebServer:
                 else:
                     scope = self.state["Scope"]["Domain"].replace(', ', ',').split(',')
 
+                delay = 0
+                if self.state["Behavior"]["Delay"]["Enabled"] == True:
+                    try:
+                        delay = int(self.state["Behavior"]["Delay"]["MS"])
+                        if delay < 0:
+                            return jsonify({"Message":"Delay cannot be negative >:("})
+                    except:
+                        return jsonify({"Message":"Delay option is invalid."})
 
+
+                
+
+                try:
+                    depth = int(self.state['Behavior']['Depth'])
+                    if depth < 0:
+                        return jsonify({"Message":"Depth cannot be negative >:("})
+                except:
+                    return jsonify({"Message":"Depth option is invalid."})
+
+
+
+                try:
+                    thread_count = int(self.state['Behavior']['ThreadCount'])
+                    if thread_count < 0:
+                        return jsonify({"Message":"Delay cannot be negative >:("})
+                except:
+                    return jsonify({"Message":"Thread count option is invalid."})
+
+                self.graph = Graph()
                 self.graph.generateGroups(auth_dict.keys())
                 
                 for user in auth_dict.keys():
@@ -117,15 +145,15 @@ class WebServer:
                     headers = temp_headers
 
                     auth_header = auth_dict[user].replace(" ", "").split(":");
+                    if len(auth_header) != 2:
+                        return jsonify({"Message":"User session header contains syntax errors"}), 500
                     headers[auth_header[0]] = auth_header[1]
                     
                     proxy = None
                     if self.state["Proxy"]["Host"] != '' and self.state["Proxy"]["Enabled"] == True:
                         proxy = self.state["Proxy"]["Host"] + ':' + self.state["Proxy"]["Port"]
 
-                    delay = 0
-                    if self.state["Behavior"]["Delay"]["Enabled"] == True:
-                        delay = self.state["Behavior"]["Delay"]["MS"]
+
 
                     print("SCOPE")
                     print(scope)
@@ -138,15 +166,16 @@ class WebServer:
                     print("HEADERS: ", headers) 
 
                     start_time = datetime.datetime.now()
+
                     # Run multithreaded crawl
                     print(self.crawler_manager)
                     edge_list, node_dict = self.crawler_manager.start(url,
                                                                       headers,
                                                                       scope,
-                                                                      int(self.state['Behavior']['Depth']), 
+                                                                      depth, 
                                                                       True, 
                                                                       proxy, 
-                                                                      int(self.state['Behavior']['ThreadCount']),
+                                                                      thread_count,
                                                                       delay)
                   
                     self.graph.addNodes(user,node_dict)
