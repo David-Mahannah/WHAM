@@ -302,3 +302,14 @@ function addme() {
   let cell2 = new_row.insertCell(1).innerHTML = '<input type="text" class="role_input">'
   let cell3 = new_row.insertCell(2).innerHTML = '<button class="delete_role_button" tabindex="-1" onclick="deleteme(this)">X</button>'
 }
+
+
+
+function addScope() {
+  table = document.getElementById('scope_table');
+  new_row = table.insertRow(-1);
+  let cell1 = new_row.insertCell(0).innerHTML = '<input checked type="radio" name="scope_radio_' + new_row.rowIndex +'">'
+  let cell2 = new_row.insertCell(1).innerHTML = '<input type="radio" name="scope_radio_' + new_row.rowIndex + '">'
+  let cell3 = new_row.insertCell(2).innerHTML = '<input type="text">'
+  let cell4 = new_row.insertCell(3).innerHTML = '<button class="delete_role_button" tabindex="-1" onclick="deleteme(this)">X</button>'
+}

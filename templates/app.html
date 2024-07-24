@@ -62,6 +62,11 @@
                 <td><input type="text" disabled class="role_input"></td>
                 <td><button disabled style="visibility:hidden;" class="delete_role_button" tabindex="-1">X</button></td>
               </tr>
+              <tr>
+                <td><input type="text" disabled class="role_input"></td>
+                <td><input type="text" disabled class="role_input"></td>
+                <td><button disabled class="delete_role_button" tabindex="-1">X</button></td>
+              </tr>
             </table>
             <div id="add_user_button_container">
               <button disabled id="add_user_button" onclick="addme()">Add User</button>
@@ -74,7 +79,21 @@
             <summary>Scope<input type="checkbox" id="scope_toggle" class="menu_toggle" onclick="custom_scope_toggle()"></summary>
             <hr>
             <div id="scope_menu">
-              <input disabled type=text id="Scope">
+              <table id="scope_table">
+                <tr>
+                  <th>In</th>
+                  <th>Out</th>
+                  <th>Host</th>
+                </tr>
+                <tr>
+                  <td><input type="radio" name="scope_radio_1"></td>
+                  <td><input type="radio" name="scope_radio_1"></td>
+                  <td><input type="text"></td>
+                </tr>
+              </table>
+              <div id="add_scope_button_container">
+                <button id="add_scope_button" onclick="addScope()">Add Scope</button>
+              <div>
             </div>
             </details>
           <hr>
@@ -145,11 +164,6 @@
             <tr>
               <th>Color</th>
               <th>Domain</th>
-            </tr>
-            <tr>
-              <td><input type=color></span></td>
-              <td><span class="username">user1</span></td>
-              <td><button disabled style="visibility:hidden;" class="delete_role_button" tabindex="-1">x</button></td>
             </tr>
             <tr>
               <td><input type=color></span></td>
