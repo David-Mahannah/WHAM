@@ -145,8 +145,8 @@ class WorkerThread(threading.Thread):
                 domain = urllib3.util.parse_url(next_url).host
                 if domain not in node_dict:
                     node_dict[domain] = []
-                if to_add_next_url not in node_dict[domain] and to_add_next_url != None:
-                    node_dict[domain].append(to_add_next_url)
+                if to_add_next_url not in [x[0] for x in node_dict[domain]] and to_add_next_url != None:
+                    node_dict[domain].append((to_add_next_url, level))
             
 
 
@@ -243,8 +243,8 @@ class CrawlerManager():
 
         if not domain in node_dict:
             node_dict[domain] = []
-        if not to_add_next_url in node_dict[domain]:
-            node_dict[domain].append(to_add_next_url)
+        if not (to_add_next_url, level) in node_dict[domain]:
+            node_dict[domain].append((to_add_next_url, level))
 
 
         # Get children
