@@ -79,6 +79,18 @@ function updateApplicationState() {
       auth_data[user] = row.cells[1].getElementsByTagName('input')[0].value;
     }
   }
+ 
+  let scope_data = [];
+  table = document.getElementById("scope_table");
+  for (let i = 1; i < table.rows.length; i++) {
+    let row = table.rows[i];
+    let in_scope =     row.cells[0].getElementsByTagName('input')[0].checked;
+    let out_of_scope = row.cells[1].getElementsByTagName('input')[0].checked;
+    let host =         row.cells[2].getElementsByTagName('input')[0].value;
+    scope_data.push({"in_scope":in_scope,"out_of_scope":out_of_scope,"host":host})
+  }
+
+
 //
 function saveApplicationState(){
   var item = JSON.stringify(application_state)
@@ -127,7 +139,7 @@ function saveApplicationState(){
     "Scope": {
       "Collapsed": !(gebid('Scope_Details').open),
       "Enabled":gebid('scope_toggle').checked,
-      "Domain":gebid('Scope').value
+      "Domain":scope_data
     },
     "Proxy": {
       "Collapsed": !(gebid('Proxy_Details').open),
@@ -167,8 +179,6 @@ function loadApplicationState() {
     if (this.readyState == 4 && this.status == 200) {
       let response_json = JSON.parse(this.responseText);
 
-      /* TODO Update DOM using the below items */
-
       if (response_json == null)
       {
         return
@@ -202,7 +212,7 @@ function loadApplicationState() {
           let cell1 = new_row.insertCell(0).innerHTML = '<input type="text" class="role_input" value="'+key+'">'
           let cell2 = new_row.insertCell(1).innerHTML = '<input type="text" class="role_input" value="'+value+'">'
           if (!first) {
-          let cell3 = new_row.insertCell(2).innerHTML = '<button class="delete_role_button" tabindex="-1" onclick="deleteme(this)">X</button>'
+            let cell3 = new_row.insertCell(2).innerHTML = '<button class="delete_role_button" tabindex="-1" onclick="deleteme(this)">X</button>'
           }
           first = false;
         }
@@ -212,7 +222,26 @@ function loadApplicationState() {
       // Scope
       gebid('Scope_Details').open = !(response_json['Scope']['Collapsed']);
       gebid('scope_toggle').checked = response_json["Scope"]["Enabled"]
-      gebid('Scope').value = response_json["Scope"]["Domain"]
+      let scopes = response_json["Scope"]["Domain"];
+      if (scopes.length !== 0) {
+        table = document.getElementById('scope_table');
+        table.innerHTML = '<tbody><tr><th>In</th><th>Out</th><th>Host</th></tr></tbody>';
+        let first = true;
+        for (scope of scopes) {
+          let new_row = table.insertRow(-1);
+          let cell1 = new_row.insertCell(0).innerHTML = '<input type="radio" name="scope_radio_'+new_row.rowIndex+'" '+ (scope['in_scope'] ? "checked" : "")+'>';
+
+
+
+          let cell2 = new_row.insertCell(1).innerHTML = '<input type="radio" name="scope_radio_'+new_row.rowIndex+'" '+(scope['out_of_scope'] ? "checked" : "")+'>';
+          scope['out_of_scope']
+          let cell3 = new_row.insertCell(2).innerHTML = '<input type="text" value="'+scope['host']+'">';
+          if (!first) {
+            let cell4 = new_row.insertCell(3).innerHTML = '<button class="delete_role_button" tabindex="-1" onclick="deleteme(this)">X</button>'
+          }
+          first = false;
+        }
+      }
 
       // Proxy
       gebid('Proxy_Details').open = !(response_json['Proxy']['Collapsed']);
@@ -238,6 +267,38 @@ function loadApplicationState() {
   xhttp.send(JSON.stringify());
 }
 
+
+function save(path) {
+  // First update the state
+  updateApplicationState();
+
+  // Then tell the server to write the state to a file
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+
+    }
+  } 
+  xhttp.open("post", "/api/save", true);
+  xhttp.setRequestHeader("content-type", "application/json; charset=UTF-8");
+  xhttp.send(JSON.stringify({"path":path}));
+}
+
+function load(path) {
+  // First tell the server to load the state from a file
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+
+    }
+  } 
+  xhttp.open("post", "/api/load", true);
+  xhttp.setRequestHeader("content-type", "application/json; charset=UTF-8");
+  xhttp.send(JSON.stringify({"path":path}));
+
+  // Then load the state stored server side.
+  loadApplicationState();
+}
 
 function run() {
   document.getElementById('server_response').innerText = '';
@@ -336,27 +397,13 @@ function addme() {
   let cell3 = new_row.insertCell(2).innerHTML = '<button class="delete_role_button" tabindex="-1" onclick="deleteme(this)">X</button>'
 }
 
-function saveFile(data, filename) {
-  // Create a Blob containing the file data
-  var blob = new Blob([data], { type: 'application/json' });
 
-  // Create a temporary anchor element
-  var a = document.createElement('a');
-  var url = URL.createObjectURL(blob);
 
-  // Set the download attribute and href
-  a.href = url;
-  a.download = filename;
-
-  // Append the anchor element to the body
-  document.body.appendChild(a);
-
-  // Trigger a click event on the anchor element
-  a.click();
-
-  // Cleanup: Remove the anchor element and URL object
-  setTimeout(function() {
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
-  }, 0);
+function addScope() {
+  table = document.getElementById('scope_table');
+  new_row = table.insertRow(-1);
+  let cell1 = new_row.insertCell(0).innerHTML = '<input checked type="radio" name="scope_radio_' + new_row.rowIndex +'">'
+  let cell2 = new_row.insertCell(1).innerHTML = '<input type="radio" name="scope_radio_' + new_row.rowIndex + '">'
+  let cell3 = new_row.insertCell(2).innerHTML = '<input type="text">'
+  let cell4 = new_row.insertCell(3).innerHTML = '<button class="delete_role_button" tabindex="-1" onclick="deleteme(this)">X</button>'
 }

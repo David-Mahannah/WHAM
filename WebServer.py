@@ -7,7 +7,20 @@ from GraphHandling import *
 import urllib3
 import re
 from ApplicationState import State
+import json
 
+
+def inScope(scopes, url):
+    for scope in scopes:
+        if scope['out_of_scope']:
+            if scope['host'] in url:
+                return False;
+    for scope in scopes:
+        if scope['in_scope']:
+            if scope['host'] in url:
+                return True;
+    return False;
+        
 
 class WebServer:
     def __init__(self, crawler_manager):
@@ -23,6 +36,22 @@ class WebServer:
         def hello():
             return render_template('app.html')
 
+
+        @app.route('/api/save', methods=['POST'])
+        def save():
+            path = request.get_json()['path'];
+            with open(path, 'w') as f:
+                json.dump(self.state, f)
+            return jsonify({"Message":"State successfully saved to file."}), 200
+            
+
+        @app.route('/api/load', methods=['POST'])
+        def load():
+            path = request.get_json()['path'];
+            with open(path, 'r') as f:
+                self.state = json.load(f)
+            
+            return jsonify({"Message":"Application file loaded."}), 200
 
         @app.route('/api/state', methods=['POST', 'GET'])
         def applicationState():
@@ -59,17 +88,14 @@ class WebServer:
             if request.method == 'POST':
                 self.cancel = False
 
-                #body = request.get_json(); 
-
                 if self.state["Target"]["URL"]["Enabled"]==True and self.state["Target"]['URL']["value"] == '':
                     return jsonify({"Message":"Target URL not provided"}), 200
                 elif self.state["Target"]["Request"]["Enabled"]==True and self.state["Target"]["Request"]["value"] == '':
                     return jsonify({"Message":"Target Request not provided"}), 200
 
-
                 print("Auth:", self.state["User_Roles"]["Roles"])
                
-
+                print("SCOPE: ", self.state["Scope"]);
 
                 auth_dict = self.state["User_Roles"]["Roles"]
                 print(auth_dict)
@@ -101,9 +127,9 @@ class WebServer:
                     url = self.state["Target"]["URL"]["value"]
 
                 if self.state["Scope"]["Enabled"] == False:
-                    scope = [urllib3.util.parse_url(url).host]
+                    scope = [{"host":urllib3.util.parse_url(url).host, "in_scope":True, "out_of_scope":False}]
                 else:
-                    scope = self.state["Scope"]["Domain"].replace(', ', ',').split(',')
+                    scope = self.state["Scope"]["Domain"]
 
                 delay = 0
                 if self.state["Behavior"]["Delay"]["Enabled"] == True:
@@ -158,7 +184,7 @@ class WebServer:
                     print("SCOPE")
                     print(scope)
 
-                    if not any(x in url for x in scope):
+                    if not inScope(scope, url):
                         return jsonify({"Message":"Target URL is our of scope."}), 200
 
 
