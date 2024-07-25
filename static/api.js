@@ -79,6 +79,39 @@ function updateApplicationState() {
       auth_data[user] = row.cells[1].getElementsByTagName('input')[0].value;
     }
   }
+//
+function saveApplicationState(){
+  var item = JSON.stringify(application_state)
+  
+    // Create a Blob containing the JSON data
+  var blob = new Blob([item], { type: 'application/json' });
+
+  // Create an invisible input element
+  var input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json'; // Allow only JSON files
+
+  // Trigger click event to open file explorer
+  input.click();
+
+  // Handle file selection
+  input.onchange = function(event) {
+    var file = event.target.files[0];
+    var filename = file.name;
+
+    // Create a FileReader to read the selected file
+    var reader = new FileReader();
+
+    reader.onload = function(event) {
+      // Save the JSON data to the selected file
+      var fileData = event.target.result;
+      saveFile(fileData, filename);
+    };
+
+    // Read the file as text
+    reader.readAsText(file);
+  };
+}
   
   var application_state = {
     "Target": {
@@ -301,4 +334,29 @@ function addme() {
   let cell1 = new_row.insertCell(0).innerHTML = '<input type="text" class="role_input">'
   let cell2 = new_row.insertCell(1).innerHTML = '<input type="text" class="role_input">'
   let cell3 = new_row.insertCell(2).innerHTML = '<button class="delete_role_button" tabindex="-1" onclick="deleteme(this)">X</button>'
+}
+
+function saveFile(data, filename) {
+  // Create a Blob containing the file data
+  var blob = new Blob([data], { type: 'application/json' });
+
+  // Create a temporary anchor element
+  var a = document.createElement('a');
+  var url = URL.createObjectURL(blob);
+
+  // Set the download attribute and href
+  a.href = url;
+  a.download = filename;
+
+  // Append the anchor element to the body
+  document.body.appendChild(a);
+
+  // Trigger a click event on the anchor element
+  a.click();
+
+  // Cleanup: Remove the anchor element and URL object
+  setTimeout(function() {
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  }, 0);
 }
