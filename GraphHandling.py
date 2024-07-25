@@ -90,8 +90,8 @@ class Graph:
         
         JSON_edge_list = []
         for edge in self._edge_list:
-            JSON_edge_list.append({"to":  id_map[(edge[0][0],edge[0][1])],
-                                   "from":id_map[(edge[1][0],edge[1][1])]})
+            JSON_edge_list.append({"from":  id_map[(edge[0][0],edge[0][1])],
+                                   "to":id_map[(edge[1][0],edge[1][1])]})
         
         output = {"node_list": JSON_node_list, "edge_list": JSON_edge_list, "groups": {str(key):val for key, val in self._groups.items()}}
 
