@@ -17,6 +17,7 @@ class Graph:
         self.all_nodes = {}
 
     def generateGroups(self, members):
+        print("MEMBERS:", members)
         self._groups = {}
         temp_groups = []
         for i in range(len(members)):
@@ -25,7 +26,10 @@ class Graph:
         for i, group in enumerate(temp_groups):
             self._groups[group] = i
 
+        print("GROUPS: ", self._groups)
+
     def addNodes(self, user, node_dict):
+        print(node_dict)
         pairs = []
         for site, node_list in node_dict.items():
             for node in node_list:
@@ -34,7 +38,8 @@ class Graph:
                     self.all_nodes[node_key] = {}
                     self.all_nodes[node_key]['group'] = [user]
                 else:
-                    self.all_nodes[node_key]['group'].append(user)
+                    if user not in self.all_nodes[node_key]['group']:
+                        self.all_nodes[node_key]['group'].append(user)
 
         # All_nodes should look like:
         # = {
@@ -66,14 +71,17 @@ class Graph:
         id_map = {}
         
         JSON_node_list = []
+
+        print("all nodes", self.all_nodes.items())
         for i, (key, val) in enumerate(self.all_nodes.items()):
             host, path = key
             group = val['group']
-            id_map[(host, path)] = i
+            id_map[(host, path[0])] = i
             JSON_node_list.append({"id": i,
                                    "host":host,
-                                   "path":path,
-                                   "label":path,
+                                   "path":path[0],
+                                   "label":path[0],
+                                   "level":path[1],
                                    "user_group":group,
                                    "group":str(self._groups[tuple(group)]),
                                  })
@@ -82,8 +90,8 @@ class Graph:
         
         JSON_edge_list = []
         for edge in self._edge_list:
-            JSON_edge_list.append({"to":  id_map[(edge[0][0],edge[0][1])],
-                                   "from":id_map[(edge[1][0],edge[1][1])]})
+            JSON_edge_list.append({"from":  id_map[(edge[0][0],edge[0][1])],
+                                   "to":id_map[(edge[1][0],edge[1][1])]})
         
         output = {"node_list": JSON_node_list, "edge_list": JSON_edge_list, "groups": {str(key):val for key, val in self._groups.items()}}
 

@@ -93,7 +93,14 @@ function loadData(nodes, edges, groups) {
       },
       color: {highlight: "white"}
     },
+    layout: {
+      hierarchical: {
+        enabled:true,
+      }
+    },
+    
     layout: { improvedLayout: true },
+    
     physics: {
       // Even though it's disabled the options still apply to network.stabilize().
       enabled: false,
@@ -107,6 +114,25 @@ function loadData(nodes, edges, groups) {
   network = new vis.Network(container, data, options);
   network.stabilize();
 }
+
+
+
+function default_graphView() {
+
+  options['layout'] = { improvedLayout: true };
+  network.setOptions(options);
+  network.stabilize()
+}
+
+function hierarchicalView() {
+  options['layout'] = {
+      hierarchical: {
+        enabled:true,
+      }
+    };
+  network.setOptions(options);
+}
+
 
 function addEdge() {
 

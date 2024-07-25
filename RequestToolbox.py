@@ -46,6 +46,8 @@ def getSubLinks(response_text, origin_url, ssl):
         else:
             sublinks.append("http://"+host+link)
 
+    list(set(sublinks))
+
     return sublinks
     
 '''
