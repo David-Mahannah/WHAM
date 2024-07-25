@@ -202,7 +202,10 @@ function loadApplicationState() {
           let cell2 = new_row.insertCell(1).innerHTML = '<input type="radio" name="scope_radio_'+new_row.rowIndex+'" '+(scope['out_of_scope'] ? "checked" : "")+'>';
           scope['out_of_scope']
           let cell3 = new_row.insertCell(2).innerHTML = '<input type="text" value="'+scope['host']+'">';
-          let cell4 = new_row.insertCell(3).innerHTML = '<button class="delete_role_button" tabindex="-1" onclick="deleteme(this)">X</button>'
+          if (!first) {
+            let cell4 = new_row.insertCell(3).innerHTML = '<button class="delete_role_button" tabindex="-1" onclick="deleteme(this)">X</button>'
+          }
+          first = false;
         }
       }
 
