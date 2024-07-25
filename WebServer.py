@@ -7,6 +7,7 @@ from GraphHandling import *
 import urllib3
 import re
 from ApplicationState import State
+import json
 
 
 def inScope(scopes, url):
@@ -35,6 +36,22 @@ class WebServer:
         def hello():
             return render_template('app.html')
 
+
+        @app.route('/api/save', methods=['POST'])
+        def save():
+            path = request.get_json()['path'];
+            with open(path, 'w') as f:
+                json.dump(self.state, f)
+            return jsonify({"Message":"State successfully saved to file."}), 200
+            
+
+        @app.route('/api/load', methods=['POST'])
+        def load():
+            path = request.get_json()['path'];
+            with open(path, 'r') as f:
+                self.state = json.load(f)
+            
+            return jsonify({"Message":"Application file loaded."}), 200
 
         @app.route('/api/state', methods=['POST', 'GET'])
         def applicationState():
@@ -110,7 +127,7 @@ class WebServer:
                     url = self.state["Target"]["URL"]["value"]
 
                 if self.state["Scope"]["Enabled"] == False:
-                    scope = [urllib3.util.parse_url(url).host]
+                    scope = [{"host":urllib3.util.parse_url(url).host, "in_scope":True, "out_of_scope":False}]
                 else:
                     scope = self.state["Scope"]["Domain"]
 

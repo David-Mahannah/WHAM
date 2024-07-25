@@ -178,7 +178,7 @@ function loadApplicationState() {
           let cell1 = new_row.insertCell(0).innerHTML = '<input type="text" class="role_input" value="'+key+'">'
           let cell2 = new_row.insertCell(1).innerHTML = '<input type="text" class="role_input" value="'+value+'">'
           if (!first) {
-          let cell3 = new_row.insertCell(2).innerHTML = '<button class="delete_role_button" tabindex="-1" onclick="deleteme(this)">X</button>'
+            let cell3 = new_row.insertCell(2).innerHTML = '<button class="delete_role_button" tabindex="-1" onclick="deleteme(this)">X</button>'
           }
           first = false;
         }
@@ -230,6 +230,38 @@ function loadApplicationState() {
   xhttp.send(JSON.stringify());
 }
 
+
+function save(path) {
+  // First update the state
+  updateApplicationState();
+
+  // Then tell the server to write the state to a file
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+
+    }
+  } 
+  xhttp.open("post", "/api/save", true);
+  xhttp.setRequestHeader("content-type", "application/json; charset=UTF-8");
+  xhttp.send(JSON.stringify({"path":path}));
+}
+
+function load(path) {
+  // First tell the server to load the state from a file
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+
+    }
+  } 
+  xhttp.open("post", "/api/load", true);
+  xhttp.setRequestHeader("content-type", "application/json; charset=UTF-8");
+  xhttp.send(JSON.stringify({"path":path}));
+
+  // Then load the state stored server side.
+  loadApplicationState();
+}
 
 function run() {
   document.getElementById('server_response').innerText = '';

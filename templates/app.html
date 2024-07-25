@@ -36,6 +36,10 @@
             <input type="checkbox" onclick="toggleTheme()">
             <span class="slider round"></span>
           </label>
+          <hr>
+          <button onclick="save('test.WM')">Save</button>
+          <button onclick="load('test.WM')">Load</button>
+          <ht>
           <!--Toggle full screen button-->
           <hr>
           <button id="fullScreenButton" onclick="toggleFullScreen()">Toggle Full Screen</button>
@@ -64,11 +68,6 @@
                 <td><input type="text" disabled class="role_input"></td>
                 <td><input type="text" disabled class="role_input"></td>
                 <td><button disabled style="visibility:hidden;" class="delete_role_button" tabindex="-1">X</button></td>
-              </tr>
-              <tr>
-                <td><input type="text" disabled class="role_input"></td>
-                <td><input type="text" disabled class="role_input"></td>
-                <td><button disabled class="delete_role_button" tabindex="-1">X</button></td>
               </tr>
             </table>
             <div id="add_user_button_container">
